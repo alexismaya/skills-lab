@@ -28,11 +28,12 @@ The script is bash (run via Git Bash on Windows). For each skill it copies `shar
 - `shared/interop-notion.md` — the interoperability contract between all skills: canonical Notion project structure, single P-table (open questions) per project, page ownership per skill, handoffs as the interface between skills, cross-skill gates, shared "Lecciones SDD" page. **This is the single source of truth.** Copies inside packaged skills are build artifacts — never edit the contract anywhere but `shared/`. A change to it affects the whole suite and should be reviewed as such.
 - `skills/<name>/` — one skill per folder: `SKILL.md` (frontmatter with `name` + trigger `description`, then the skill body) plus optional `references/` and `templates/`.
 
-Most skills operate over a shared Notion project: `derivar-proyecto` and `sdd-harness-notion` build it, `project-onboarding` documents it and `project-deck` presents it, and the QA skills test it. `git-workflow` is cross-cutting — it governs how agents use Git in any repo (pipeline project or not) and coordinates through the same Notion contract:
+Most skills operate over a shared Notion project: `project-audit` diagnoses an existing one, `derivar-proyecto` and `sdd-harness-notion` build it, `project-onboarding` documents it and `project-deck` presents it, and the QA skills test it. `git-workflow` is cross-cutting — it governs how agents use Git in any repo (pipeline project or not) and coordinates through the same Notion contract:
 
 | Skill | Integración prevista | Role |
 |---|---|---|
 | `derivar-proyecto` | Claude | Discovery for projects derived from an existing one: inheritance matrix, anti-carryover guards |
+| `project-audit` | Any agent | Diagnosis: audit against 4 pillars (security, scalability, performance, maintainability) with `file:line` evidence and justified severity; hands off to `derivar-proyecto` (rehacer) or `sdd-harness-notion` (remediar) |
 | `sdd-harness-notion` | Claude | Construction: phases with human-review gates, stages atomized in Notion, evidence per acceptance criterion |
 | `project-onboarding` | Claude | Documentation: one-shot Notion snapshot of a project (vision, architecture, flows, data model, integrations, setup) with Mermaid diagrams; feeds `project-deck` |
 | `project-deck` | Claude | Presentation: generates a project PPTX as a point-in-time snapshot; audience-driven (technical / stakeholder / user manual); consumes `project-onboarding`'s `diagrams-export` |

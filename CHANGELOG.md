@@ -45,6 +45,8 @@
   Motivo de fondo: `check-neutralidad.sh --all` pasaba limpio sobre ellas. Es sesgo
   semántico, que es justo lo que el chequeo mecánico no ve. Registrado en
   `UNIVERSOS-SINTETICOS.md` § Dónde está en uso.
+- CLAUDE.md: la tabla de arquitectura no listaba `project-audit`, que sí existía en
+  `skills/`, en el contrato compartido y en el README. Añadida como transversal.
 
 ## 2026-07-28
 - qa-discovery v1.1: **agnóstica de stack y de dominio**. Nuevo Paso 1.0
