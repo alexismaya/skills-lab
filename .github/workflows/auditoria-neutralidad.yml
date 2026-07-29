@@ -21,6 +21,21 @@ jobs:
         with:
           fetch-depth: 0   # necesario para inspeccionar mensajes de commit
 
+      - name: Los scripts conservan el bit de ejecucion
+        # En Windows core.filemode es false: un chmod +x local no llega al indice
+        # y el script queda como 100644. En este runner eso es "Permission denied".
+        # Va antes que la auditoria porque, si falla, la auditoria no puede correr.
+        run: |
+          sin_bit="$(git ls-files -s scripts/ | grep -E '\.sh$|hooks/' | grep -v '^100755' || true)"
+          if [ -n "$sin_bit" ]; then
+            echo "Estos archivos deberian ser ejecutables (100755):"
+            echo "$sin_bit"
+            echo
+            echo "Corregir con:  git update-index --chmod=+x <archivo>"
+            exit 1
+          fi
+          echo "todos los scripts conservan el bit de ejecucion"
+
       - name: Arbol completo (contenido y nombres de archivo)
         run: ./scripts/check-neutralidad.sh --all
 
