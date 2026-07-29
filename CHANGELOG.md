@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-07-29
+- sdd-harness-notion v1.3: **variante de análisis para proyecto desde cero**. La rama
+  "nuevo" de Q1 declaraba "Fase de Análisis primero" y no llevaba a nada distinto: la
+  fase estaba escrita asumiendo que hay algo que auditar —una base, un contrato, un
+  DDL— y con un proyecto de cero mordía poco. § Fase de Análisis se desdobla en
+  **variante A** (sobre base existente, el análisis *observa*) y **variante B** (desde
+  cero, el análisis *propone una forma*).
+  El modo de fallo de B es distinto y la disciplina se diseñó contra él: el riesgo no es
+  leer mal el código sino **inventar una arquitectura verosímil que el usuario ratifica
+  porque suena razonable**. De ahí la **regla de trazabilidad** que sustituye a
+  `archivo:línea` — toda afirmación marcada `[declarado]` / `[inferido]` / `[P-n]`, con
+  lo inferido presentado para confirmación y prohibición explícita de rellenar huecos
+  con "lo habitual del sector".
+  Ocho secciones: problema y alcance con su mitad negativa · anclas cuantitativas ·
+  restricciones no negociables (incluida la capacidad real del equipo que mantendrá el
+  sistema) · decisiones de arquitectura · lo que NO se construye · convenciones ·
+  línea base prospectiva · Ps. Reglas: **una decisión sin alternativas rechazadas es una
+  preferencia**, y el análisis propone mientras el gate decide — es la única fase cuyo
+  entregable es propositivo.
+  Nueva plantilla `references/plantillas.md` § 1b, deliberadamente más extensa que la de
+  la variante A: donde no hay fuente que leer, el rigor lo aporta la estructura del
+  entregable.
+- sdd-harness-notion: **nueva Q6 de la entrevista — volumen y horizonte**. Con su
+  **regla de anclaje**: toda propuesta de infraestructura se argumenta contra ese
+  número; si el volumen no la justifica, se argumenta por mantenibilidad o por costo de
+  cambio, declarando cuál. Es el complemento constructivo de la regla transversal 4, que
+  hasta ahora solo sabía decir *no construyas*: el número permite además declarar por
+  escrito **qué mecanismos NO hacen falta a esta escala**, para que una fase posterior no
+  los reintroduzca. Aplica a todo el ciclo, pero su peso cambia — para un bug es una
+  línea; para un proyecto de cero gobierna la arquitectura entera.
+  Motivo: proponer arquitectura es donde un agente improvisa con más confianza y menos
+  base. Sin ancla cuantitativa se acaba con infraestructura de gran escala para un
+  sistema que no la necesita.
+- sdd-harness-notion § S6: la convención de commits y el modelo de branching se declaran
+  como **decisión**, y el mecanismo se deja a `git-workflow`, que la lee del registro del
+  proyecto. Evita duplicar protocolo entre dos skills.
+
 ## 2026-07-28
 - qa-discovery v1.1: **agnóstica de stack y de dominio**. Nuevo Paso 1.0
   bloqueante — detectar el stack y confirmarlo con el usuario antes de aplicar

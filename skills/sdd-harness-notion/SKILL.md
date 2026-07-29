@@ -22,7 +22,7 @@ Esta skill no trae proyectos de ejemplo embebidos, a propósito: cada proyecto d
 Al activarse la skill sobre un proyecto donde no se ha usado antes, NO generar nada todavía. Entrevistar al usuario — preguntas cortas, de una en una o en un solo bloque de opciones si la interfaz lo permite. Antes de preguntar, revisar el contexto ya disponible (conversación, memoria, Notion accesible): lo que ya se sabe no se pregunta, se **confirma**.
 
 **Q1 — Naturaleza del trabajo:** ¿Proyecto nuevo desde cero, o implementación sobre algo existente (feature, bug, refactor, remediación)?
-- *Nuevo* → ciclo completo: Fase de Análisis primero, siempre.
+- *Nuevo* → ciclo completo, y la Fase de Análisis usa la **variante desde cero** (§ Fase de Análisis): no hay base que auditar, así que el análisis produce **decisiones de forma** — arquitectura, stack, convenciones — en vez de hallazgos. Si el proyecto nace de otro existente, esto no aplica: es territorio de `derivar-proyecto`.
 - *Implementación sobre existente* → el ciclo se adapta: el "análisis" puede ser una etapa corta de diagnóstico (reproducir el bug, delimitar el impacto del feature), pero **nunca se omite** — cambia de escala, no de existencia.
 
 **Q2 — Estado en Notion:** ¿Ya existe una página/espacio de Notion con información de este proyecto, o se empieza a cargar desde cero?
@@ -50,6 +50,13 @@ Tabla de calibración por perfil (la granularidad es una calibración de esta Q4
 El perfil elegido se declara por etapa en la tabla de etapas del hub (columna **perfil requerido**, ver § Modularización) — una misma fase puede mezclar etapas de distinto perfil. Las etapas no aptas para bajo coste se identifican con la regla de escalamiento (§ Escalamiento por perfil).
 
 **Q5 — Insumos disponibles:** ¿Qué fuentes de verdad existen? (repo base/plantilla, contrato/spec/colección, DDL o esquema de datos, hallazgos o líneas base previas, lecciones de proyectos anteriores). Todo insumo mencionado se lista; todo insumo faltante que la metodología esperaría se registra como P.
+
+**Q6 — Volumen y horizonte:** ¿Cuál es el volumen real de operación — usuarios, registros, peticiones, elementos del catálogo — **al arrancar** y en el horizonte que el usuario declare? ¿Cuánto tiempo se espera que el sistema viva sin rehacerse?
+
+- Aplica siempre, pero **su peso cambia**: para un bug es una línea ("no cambia la escala"); para un proyecto desde cero es el número contra el que se argumenta toda la arquitectura.
+- **Regla de anclaje:** toda propuesta de infraestructura se argumenta **contra este número**. Si el volumen no la justifica, se argumenta por mantenibilidad o por costo de cambio — y se declara cuál de las dos. Una decisión de infraestructura sin ancla es una preferencia disfrazada de criterio.
+- Es también el complemento de la regla transversal 4 (default fail-safe): esa solo sabe decir *no construyas*; el número permite además declarar **qué mecanismos NO hacen falta a esta escala**, por escrito, para que una fase posterior no los reintroduzca.
+- Si el usuario no lo sabe, se registra como P y se acota con un rango declarado como suposición a confirmar — nunca se infiere en silencio.
 
 Con las respuestas, generar la **propuesta**: fases con sus objetivos, etapas tentativas por fase, Ps iniciales detectadas, y estructura de Notion. Presentarla, iterar con el usuario, y solo entonces materializar en Notion.
 
@@ -82,15 +89,51 @@ Reglas transversales:
 
 ## Fase de Análisis
 
-Producir un prompt que pida un reporte, nunca código (plantilla en `references/plantillas.md`). Secciones típicas — adaptar a lo que el proyecto tenga, no forzar las que no apliquen:
+Producir un prompt que pida un reporte, nunca código (plantillas en `references/plantillas.md`). Hay **dos variantes**, según la respuesta a Q1. Comparten el principio —el análisis precede a la implementación y nada se asume— pero no el material: una lee una base existente, la otra no tiene nada que leer salvo lo que diga el usuario.
 
-- **Auditoría de la base** (si se parte de código existente): clasificar el 100% en heredable / no-heredable / código muerto, con rutas explícitas.
+### Variante A — sobre una base existente
+
+El análisis **observa**. Secciones típicas — adaptar a lo que el proyecto tenga, no forzar las que no apliquen:
+
+- **Auditoría de la base:** clasificar el 100% en heredable / no-heredable / código muerto, con rutas explícitas.
 - **Contrato/spec:** inventario completo de la fuente de verdad, sin inventar nada ausente — lo ausente es una P.
 - **Datos** (si hay esquema compartido): verificado contra el DDL real, no inferido del código; convenciones observadas; colisiones; dueños de tablas compartidas.
 - **Línea base** (seguridad u otra crítica del dominio): checklist *regla · estado en la base (✅/⚠️/🔴) con evidencia archivo:línea · obligación para el nuevo código*, y veredicto explícito.
 - **Preguntas abiertas** numeradas al final.
 
 Método del reporte: afirmaciones de código con `archivo:línea`; afirmaciones de esquema contra el DDL/migración que lo crea.
+
+### Variante B — proyecto desde cero
+
+El análisis **propone una forma**, porque no hay base que observar. Eso cambia el modo de fallo: aquí el riesgo no es leer mal el código, es **inventar una arquitectura verosímil y que el usuario la ratifique porque suena razonable**. Toda la disciplina de esta variante existe para impedirlo.
+
+**Regla de trazabilidad (sustituye a `archivo:línea`).** Como la única fuente son las palabras del usuario, cada afirmación del reporte lleva una de estas tres marcas — sin excepción:
+
+| Marca | Qué significa |
+|---|---|
+| `[declarado]` | El usuario lo dijo. Se cita lo que dijo, no una paráfrasis conveniente |
+| `[inferido]` | El ejecutor lo derivó de algo declarado. **Se presenta para confirmación**; no es vinculante hasta que el usuario lo ratifique en el gate |
+| `[P-n]` | No se sabe y hace falta. Bloquea lo que dependa de ello |
+
+Una sección entera sin una sola marca `[declarado]` es una señal de alarma: significa que el reporte se construyó sobre inferencias encadenadas.
+
+**Secciones** (detalle y plantilla literal en `references/plantillas.md` § 1b):
+
+1. **Problema y alcance** — qué se construye, para quién, y qué **no** se construye.
+2. **Anclas cuantitativas** — el volumen y horizonte de Q6. Es el número contra el que se argumenta lo demás.
+3. **Restricciones no negociables** — stack impuesto, infraestructura existente, compliance, sistemas con los que hay que integrarse, capacidad real del equipo que lo va a mantener.
+4. **Decisiones de arquitectura** — una ficha por decisión: qué se elige · **alternativas consideradas** · por qué esta contra el número de la sección 2 · **qué la invalidaría**.
+5. **Lo que NO se construye** — los mecanismos que a este volumen no hacen falta, nombrados uno a uno.
+6. **Convenciones desde el día uno** — estructura, nomenclatura, y la **decisión** de convención de commits y modelo de branching (solo la decisión: el mecanismo lo gobierna `git-workflow`, que la lee — no se duplica aquí).
+7. **Línea base de seguridad**, prospectiva: qué reglas serán obligatorias para todo el código nuevo y con qué guarda automática se verifican en el scaffold.
+8. **Preguntas abiertas** numeradas.
+
+**Reglas de la variante:**
+
+- **Una decisión sin alternativas rechazadas no es una decisión, es una preferencia.** Toda ficha de la sección 4 lista al menos dos opciones consideradas y por qué se descartaron.
+- **El análisis propone; el gate decide.** Ninguna decisión de la sección 4 es vinculante hasta que el usuario la ratifica. Es la única fase donde el entregable es propositivo, y por eso el gate importa más que en ninguna otra.
+- **Toda decisión de infraestructura se argumenta contra el número de la sección 2** (regla de anclaje, Q6). Sin ancla, se registra como P — no se resuelve por criterio del ejecutor.
+- **Cero código, cero scaffold, cero migraciones.** Sigue siendo fase de análisis.
 
 ## Anatomía de un prompt de fase
 
@@ -203,5 +246,5 @@ Si las páginas las genera otro agente con su propia integración, pueden nacer 
 
 ## Recursos de la skill
 
-- `references/plantillas.md` — plantillas literales: prompt de análisis, prompt de implementación, hub de fase, subpágina de etapa, reporte de cierre, hallazgo (H-x), y formato de la página de Lecciones. Leer al redactar cualquiera de estos artefactos. Las plantillas son punto de partida — la estructura existente del Notion del usuario (Q2) y sus Lecciones tienen prioridad sobre ellas.
+- `references/plantillas.md` — plantillas literales: prompt de análisis (§ 1 sobre base existente, § 1b desde cero), prompt de implementación, hub de fase, subpágina de etapa, reporte de cierre, hallazgo (H-x), y formato de la página de Lecciones. Leer al redactar cualquiera de estos artefactos. Las plantillas son punto de partida — la estructura existente del Notion del usuario (Q2) y sus Lecciones tienen prioridad sobre ellas.
 - `references/interop-notion.md` — contrato de interoperabilidad con las demás skills de la suite (`derivar-proyecto`, `qa-discovery`, `qa-generator` u otras) cuando operan sobre el mismo proyecto: estructura canónica del hub, tabla única de Ps con numeración compartida, ownership de páginas, handoffs como interfaz, gates cruzados con QA. Leer SIEMPRE que el proyecto involucre (o vaya a involucrar) más de una skill de la suite.

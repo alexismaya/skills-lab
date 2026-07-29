@@ -89,6 +89,150 @@ autorizaré la Fase 2 (scaffold).
 
 ---
 
+## 1b. Prompt de Fase de Análisis — proyecto desde cero
+
+> Variante B de § Fase de Análisis. Se usa cuando Q1 = *nuevo desde cero* y el proyecto
+> **no** nace de otro existente (si nace de otro, es `derivar-proyecto`).
+>
+> **Por qué esta plantilla es más larga que la de la variante A.** En un proyecto con base
+> existente el rigor lo aporta la fuente: hay código que clasificar y un DDL contra el que
+> verificar, y la realidad acota lo que el ejecutor puede afirmar. Aquí no hay nada que leer
+> salvo lo que diga el usuario, así que **el rigor tiene que aportarlo la estructura del
+> entregable**. De ahí las marcas de trazabilidad, las alternativas obligatorias y la
+> condición de invalidación: son lo único que separa un análisis de una invención elegante.
+
+```markdown
+# Prompt — Fase de Análisis (proyecto desde cero): {objetivo} (`{proyecto}`)
+
+## Contexto
+{Qué se quiere construir, en las palabras del usuario.}
+
+**Esta es una fase de ANÁLISIS exclusivamente. NO se genera código, NO se crea el
+repositorio, NO se escriben migraciones, NO se instala nada.** El entregable es un
+reporte de decisiones que revisaré y ratificaré antes de autorizar el scaffold.
+
+**No hay base que auditar.** La única fuente de este análisis es lo que yo he
+declarado. Por eso rige la regla de trazabilidad de abajo: sin ella, este reporte
+sería una arquitectura inventada con aspecto de análisis.
+
+## Regla de trazabilidad (no negociable)
+Cada afirmación del reporte lleva **una** de estas marcas:
+
+- `[declarado]` — lo dije yo. Cita mis palabras, no una paráfrasis que te convenga.
+- `[inferido]` — lo derivaste de algo declarado. Preséntalo para confirmación:
+  no es vinculante hasta que yo lo ratifique en el gate.
+- `[P-n]` — no se sabe y hace falta. Va a la tabla de preguntas abiertas con lo
+  que bloquea.
+
+Si una sección no tiene ninguna marca `[declarado]`, está construida sobre
+inferencias encadenadas: dilo explícitamente al principio de esa sección.
+
+**Prohibido rellenar huecos con lo habitual del sector.** "Normalmente se usa X"
+no es una fuente. Si no lo declaré y lo necesitas, es una P.
+
+## Insumos
+1. {descripción del problema en prosa, notas, bocetos — lo que haya}
+2. {restricciones conocidas: stack impuesto, infraestructura, compliance}
+3. {volumen y horizonte declarados en la entrevista (Q6)}
+4. {sistemas existentes con los que hay que integrarse — si aplica}
+
+## Objetivo
+Producir `analisis-{slug}.md` con estas secciones:
+
+### S1 — Problema y alcance
+Qué se construye, para quién, y qué problema resuelve — en lenguaje de negocio.
+Y explícitamente: **qué NO se construye** en esta primera versión.
+Todo con su marca. Un alcance sin la mitad negativa no acota nada.
+
+### S2 — Anclas cuantitativas
+| Magnitud | Al arrancar | Horizonte declarado | Marca |
+|---|---|---|---|
+| {usuarios / registros / peticiones / elementos de catálogo} | {n} | {n} | {[declarado] o [P-n]} |
+
+Horizonte temporal: {cuánto se espera que viva sin rehacerse}.
+**Este es el número contra el que se argumenta toda la sección S4.** Si falta,
+S4 no puede cerrarse: se registra como P y se detiene ahí.
+
+### S3 — Restricciones no negociables
+Lo que NO se puede elegir, declarado antes de elegir nada:
+- Stack impuesto por el equipo, la empresa o el cliente
+- Infraestructura que ya existe y hay que usar
+- Requisitos de compliance
+- Sistemas con los que hay que integrarse, y quién es su dueño
+- **Capacidad real del equipo que lo va a mantener** — una arquitectura que el
+  equipo no puede sostener es una mala arquitectura por buena que sea
+
+### S4 — Decisiones de arquitectura
+Una ficha por decisión. **Una decisión sin alternativas rechazadas no es una
+decisión, es una preferencia.**
+
+#### D{n} — {qué se decide}
+- **Opción elegida:** {cuál}
+- **Alternativas consideradas:** {al menos dos, con por qué se descartaron}
+- **Justificación contra S2:** {por qué esta opción para **ese** volumen concreto}.
+  Si el volumen no la justifica: declarar que se elige por **mantenibilidad**
+  o por **costo de cambio**, y decir cuál de las dos. No valen ambas a la vez.
+- **Qué la invalidaría:** {la condición concreta que obligaría a revisarla —
+  un umbral de volumen, un requisito nuevo, una integración}
+- **Marca:** {[declarado] / [inferido] / gateada por [P-n]}
+
+Cubrir como mínimo: forma del sistema · stack y por qué · persistencia ·
+autenticación y autorización · fronteras entre componentes · despliegue.
+
+### S5 — Lo que NO se construye
+Lista nominada de los mecanismos que a este volumen **no hacen falta**, cada uno
+con el umbral que los volvería necesarios:
+
+| Mecanismo descartado | Por qué no hace falta hoy | Qué lo haría necesario |
+|---|---|---|
+
+Esta sección es el complemento de la regla transversal 4 (default fail-safe): esa
+solo sabe decir *no construyas*. Escribir aquí lo descartado impide que una fase
+posterior lo reintroduzca "por si acaso" sin discutirlo.
+
+### S6 — Convenciones desde el día uno
+- Estructura de directorios y organización de capas
+- Nomenclatura (archivos, símbolos, rutas, tablas)
+- **Decisión** de convención de commits y modelo de branching
+  → solo la decisión. El mecanismo lo gobierna `git-workflow`, que la lee del
+  registro del proyecto. No duplicar aquí su protocolo.
+- Qué guardas automáticas se instalarán en el scaffold para sostener todo lo anterior
+
+### S7 — Línea base de seguridad (prospectiva)
+| Regla | Obligación para el código nuevo | Cómo se verifica sola |
+|---|---|---|
+
+Veredicto explícito: qué es obligatorio desde el primer commit y qué se difiere,
+con la fase que lo recoge.
+
+### S8 — Preguntas abiertas
+| P | Tema | Qué bloquea | Marca de origen |
+|---|---|---|---|
+
+## Criterios de aceptación
+1. Reporte único con las ocho secciones.
+2. **Toda afirmación lleva marca** `[declarado]` / `[inferido]` / `[P-n]`.
+   Una sola sin marca invalida el reporte.
+3. Cada ficha de S4 lista al menos dos alternativas rechazadas con su motivo.
+4. Cada ficha de S4 se argumenta contra el número de S2, o declara explícitamente
+   que se elige por mantenibilidad o por costo de cambio.
+5. Cada ficha de S4 declara qué la invalidaría.
+6. S5 no está vacía. Un proyecto donde "todo hace falta" no se analizó.
+7. S1 incluye la mitad negativa del alcance.
+8. Cero código, repo, migraciones o configuración generados.
+
+## Fuera de alcance (no hacer)
+- Scaffold, código, migraciones, instalación de dependencias.
+- Elegir por mí: las decisiones de S4 se presentan, se ratifican en el gate.
+- Rellenar con lo habitual del sector lo que no declaré.
+
+## Entregable
+`analisis-{slug}.md` → lo reviso → ratifico o corrijo las decisiones de S4 →
+gate → Fase 2 (scaffold).
+```
+
+---
+
 ## 2. Prompt de Fase de Implementación (scaffold o dominio)
 
 ```markdown
