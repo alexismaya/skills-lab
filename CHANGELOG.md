@@ -50,6 +50,36 @@
   tres plantillas de prompt (crear un universo, poblar un archivo, auditar un
   archivo). **No se empaqueta en ninguna skill:** es material de autoría, no de
   ejecución.
+- Guardas de neutralidad: verificación mecánica de que no entre material
+  identificable al repo, sobre **cuatro superficies** — contenido de archivos,
+  nombres de archivo, **mensajes de commit** y nombre de rama. El mensaje de
+  commit es la superficie que ninguna lectura de diff revisa.
+  `scripts/check-neutralidad.sh` con cuatro capas: correos y hosts no
+  permitidos; formas con aspecto de nombre propio; lista local opcional de
+  prohibidos (`.neutralidad-local`, nunca versionada); y tokens no reconocidos
+  contra `scripts/neutralidad-permitidos.txt`.
+  **La lista versionada es de lo permitido, no de lo prohibido.** Una lista de
+  prohibidos en un repo público republica exactamente lo que pretende ocultar, y
+  además no puede conocer un nombre que todavía no existe; la inversión resuelve
+  las dos cosas a la vez. Hooks en `scripts/hooks/` activados con
+  `core.hooksPath` vía `install-hooks.sh`, de modo que viajan versionados con el
+  repo en lugar de morir en cada clon.
+  Workflow de CI declarado explícitamente como **auditoría posterior al push, no
+  barrera**: cuando falla, el contenido ya está en el servidor. Su valor es
+  cubrir lo que los hooks no ven — ediciones desde la web de la plataforma y
+  clones sin hooks instalados.
+  Límite declarado por escrito: ninguna expresión regular detecta filtración
+  semántica, un ejemplo sin cadenas prohibidas que aún dibuje un sector o una
+  arquitectura reconocibles. Para eso está el Prompt C de
+  `UNIVERSOS-SINTETICOS.md`.
+- CLAUDE.md: el repo se declara **público y destinado a terceros**. La regla 2
+  pasa de cubrir solo las skills a cubrir todas las superficies —incluidos
+  nombres de archivo, nombres de rama y mensajes de commit— y nombra la vía
+  correcta para conservar el aprendizaje de un caso real: la página de Lecciones,
+  que es privada. En el repo queda la *forma* del hallazgo, nunca el dato ni el
+  proyecto del que salió. Nuevas reglas 3b (los ejemplos salen del universo
+  sintético; el stack es ejemplo declarado, nunca requisito) y 3c (la neutralidad
+  se verifica antes de commitear, no después).
 
 ## 2026-07-25
 - sdd-harness-notion v1.2: tres reglas derivadas de fallas **silenciosas** —

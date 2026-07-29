@@ -1,0 +1,187 @@
+# Lista de lo PERMITIDO para la verificacion de neutralidad.
+#
+# Deliberadamente invertida: aqui NO se listan los terminos prohibidos. Una lista
+# de prohibidos versionada en un repo publico republica exactamente los nombres
+# que se pretende ocultar, en un archivo cuyo nombre invita a leerlo.
+#
+# El efecto secundario de la inversion es el que importa: al marcar como
+# sospechoso todo lo que no esta aqui, la verificacion atrapa material de un
+# proyecto que todavia no existe — cosa que ninguna lista negra puede hacer.
+#
+# Categorias:
+#   correo: direcciones o dominios de correo admitidos. Con @ = direccion exacta;
+#           sin @ = dominio, admite subdominios.
+#   host:   dominios admitidos (solo reservados para documentacion y publicos)
+#   forma:  nombres con forma de repo/servicio admitidos (universo sintetico)
+#   token:  siglas y nombres propios admitidos
+#
+# Anadir una entrada equivale a declarar ese termino neutro de forma permanente.
+# Hazlo a conciencia y justifica el porque en el mensaje del commit.
+
+# --- correo: direcciones y dominios de correo admitidos ----------------------
+# Correos de no-respuesta de las plataformas usadas en los trailers de commit.
+# Cualquier otra direccion se bloquea: un correo personal en un repo publico es
+# dato identificable, y en el historial no se quita editando archivos.
+correo:noreply@anthropic.com
+correo:users.noreply.github.com
+
+# --- host: dominios admitidos ------------------------------------------------
+host:example.com
+host:example.org
+host:example.net
+host:github.com
+host:claude.ai
+host:anthropic.com
+
+# --- forma: nombres de repo/servicio del universo sintetico ------------------
+forma:api-catalogos
+forma:portal-front
+forma:admin-front
+
+# --- token: nombres propios y siglas admitidos ---------------------------
+# Regenerado por scripts/seed-permitidos.sh el 2026-07-28.
+# Anadir a mano un token equivale a declararlo neutro de forma permanente.
+token:ACCIÓN
+token:ACR
+token:AMBAS
+token:ANALISIS
+token:ANTES
+token:ANÁLISIS
+token:API
+token:ATENCION
+token:AUDIENCIA
+token:AUDITORIA
+token:BARRERA
+token:BLOQUE
+token:BORRADOR
+token:BREAKING
+token:BaseTestCase
+token:CERO
+token:CHANGE
+token:CHANGELOG
+token:CHECK
+token:CLAUDE
+token:CLI
+token:CON
+token:CONTRIBUTING
+token:CORREOS
+token:CORS
+token:CSS
+token:CVE
+token:CalculadoraTarifa
+token:CalculadoraTarifaTest
+token:CamelCase
+token:CmdletBinding
+token:ConfirmacionPage
+token:ConfirmarReservaJob
+token:CÓMO
+token:DDL
+token:DENTRO
+token:DESC
+token:DESCRIPTION
+token:DESPUES
+token:DEST
+token:DOM
+token:DocumentoTest
+token:ESTA
+token:EXACTAMENTE
+token:EXACTO
+token:EXAMPLE
+token:EXISTENTE
+token:ErrorActionPreference
+token:FALLIDA
+token:FALLOS
+token:FAQ
+token:FIXME
+token:FORMA
+token:FORMAS
+token:FUENTE
+token:FormateadorTarifas
+token:FormularioSolicitud
+token:GATEAN
+token:GDPR
+token:GLOBALES
+token:HACK
+token:HEAD
+token:HIPAA
+token:HIT
+token:HOME
+token:HOSTS
+token:HTML
+token:HTTP
+token:IDE
+token:IDOR
+token:IMPLEMENTACIÓN
+token:ItemType
+token:LISIS
+token:LITERALMENTE
+token:LOCAL
+token:MCP
+token:MODO
+token:MVP
+token:NOMBRES
+token:NUNCA
+token:NoHabilitadoTest
+token:NombreViejo
+token:OBLIGATORIO
+token:OtroProducto
+token:PARAMETER
+token:PATRONES
+token:PCI
+token:PDF
+token:PENDIENTE
+token:PERMITIDO
+token:PERMITIDOS
+token:PII
+token:POST
+token:PPTX
+token:PROPUESTA
+token:PROYECTO
+token:ProductoViejo
+token:ProveedorClient
+token:ProveedorService
+token:RAMA
+token:RANGO
+token:README
+token:REAL
+token:REPETIR
+token:REPITE
+token:REST
+token:ROOT
+token:RefreshDatabase
+token:ReservaTest
+token:SCAFFOLD
+token:SDD
+token:SELECT
+token:SHA
+token:SHARED
+token:SIEMPRE
+token:SILUETA
+token:SIN
+token:SINTETICOS
+token:SKILL
+token:SOAP
+token:SOLO
+token:SPA
+token:SQL
+token:SYNOPSIS
+token:SolicitudPage
+token:SyncEstadoProveedor
+token:TEXTO
+token:TMP
+token:TODAS
+token:TODO
+token:TODOS
+token:TestCase
+token:UAT
+token:UNIVERSOS
+token:URL
+token:UTF
+token:VERIFICACIÓN
+token:VINCULANTES
+token:WHEN
+token:XSS
+token:YAML
+token:YYYY
+token:ZÁÉÍÓÚÑÜ
+token:ÚNICA

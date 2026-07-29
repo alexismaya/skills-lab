@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# El mensaje de commit: la superficie que no revisa ninguna lectura de diff.
+exec "$(git rev-parse --show-toplevel)/scripts/check-neutralidad.sh" --msg "$1"

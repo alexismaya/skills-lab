@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Contenido de los archivos en el index + nombres de archivo.
+exec "$(git rev-parse --show-toplevel)/scripts/check-neutralidad.sh" --staged

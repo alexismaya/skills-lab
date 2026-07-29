@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+# Ultima barrera antes de publicar: el rango completo que se empuja y el nombre
+# de la rama. Atrapa lo que se colo con --no-verify en los hooks de commit.
+set -e
+ROOT="$(git rev-parse --show-toplevel)"
+CHECK="$ROOT/scripts/check-neutralidad.sh"
+
+RAMA="$(git rev-parse --abbrev-ref HEAD)"
+TMP="$(mktemp)"; printf '%s\n' "$RAMA" > "$TMP"
+"$CHECK" --msg "$TMP" || { rm -f "$TMP"; exit 1; }
+rm -f "$TMP"
+
+while read -r _local_ref local_sha _remote_ref remote_sha; do
+  [ "$local_sha" = "0000000000000000000000000000000000000000" ] && continue
+  case "$remote_sha" in
+    0000000000000000000000000000000000000000) RANGO="$local_sha" ;;
+    *) RANGO="$remote_sha..$local_sha" ;;
+  esac
+  "$CHECK" --range "$RANGO" || exit 1
+done

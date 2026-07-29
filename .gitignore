@@ -1,2 +1,7 @@
 dist/
 .DS_Store
+
+# Lista local de terminos prohibidos para la verificacion de neutralidad.
+# Nunca se versiona: una lista de prohibidos publicada republica exactamente
+# lo que se pretende ocultar. Ver scripts/check-neutralidad.sh.
+.neutralidad-local

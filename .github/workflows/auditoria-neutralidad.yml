@@ -1,0 +1,48 @@
+# AUDITORIA, NO BARRERA.
+#
+# Este workflow corre DESPUES del push: cuando falla, el contenido ya esta en el
+# servidor y ya es alcanzable por SHA. No impide la publicacion — la detecta.
+# La barrera real son los hooks locales (scripts/install-hooks.sh).
+#
+# Su valor: cubre lo que los hooks no ven — ediciones hechas desde la web de la
+# plataforma, y commits empujados con --no-verify desde un clon sin hooks.
+name: auditoria-neutralidad (posterior al push)
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # necesario para inspeccionar mensajes de commit
+
+      - name: Arbol completo (contenido y nombres de archivo)
+        run: ./scripts/check-neutralidad.sh --all
+
+      - name: Mensajes de los commits nuevos
+        # El arbol puede estar limpio y el mensaje de commit no: es la superficie
+        # por la que se ha colado material en el pasado, y --all no la mira.
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGO="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+          elif [ -n "${{ github.event.before }}" ] \
+            && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ] \
+            && git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
+            RANGO="${{ github.event.before }}..${{ github.sha }}"
+          else
+            RANGO=""
+          fi
+          if [ -n "$RANGO" ]; then
+            echo "rango: $RANGO"
+            ./scripts/check-neutralidad.sh --range "$RANGO"
+          else
+            echo "sin rango previo (primer push o historia reescrita): revisando solo HEAD"
+            git log -1 --pretty=%B > /tmp/msg.txt
+            ./scripts/check-neutralidad.sh --msg /tmp/msg.txt
+          fi
