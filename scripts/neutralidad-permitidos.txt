@@ -126,6 +126,7 @@ token:NombreViejo
 token:OBLIGATORIO
 token:OtroProducto
 token:PARAMETER
+token:PATH
 token:PATRONES
 token:PCI
 token:PDF
