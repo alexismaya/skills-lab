@@ -4,7 +4,7 @@ Referencia para calibrar la severidad de los hallazgos de forma consistente y no
 arbitraria. Leer al asignar severidad en la Fase 1. La severidad **no** es una propiedad
 intrínseca del defecto: es función de su **impacto** en el contexto del proyecto (Q5:
 compliance, recursos compartidos, criticidad del negocio). Un mismo patrón puede ser crítico
-en un sistema de pagos y medio en una herramienta interna.
+en un sistema que maneja datos de terceros y medio en una herramienta interna.
 
 ## Regla de oro
 

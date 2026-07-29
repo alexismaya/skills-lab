@@ -36,6 +36,15 @@
 - sdd-harness-notion § S6: la convención de commits y el modelo de branching se declaran
   como **decisión**, y el mecanismo se deja a `git-workflow`, que la lee del registro del
   proyecto. Evita duplicar protocolo entre dos skills.
+- project-audit: los ejemplos pasan al **universo sintético vigente**. Las rutas del handoff
+  en `references/plantillas-auditoria.md` eran las únicas de la suite que no salían de ningún
+  universo declarado, y ataban el archivo a un sector — dos de las seis categorías que busca
+  el Prompt C a la vez (rutas de repo + vocabulario sectorial). El archivo declara ahora su
+  dominio ilustrativo en la cabecera, como ya hacían los de qa-*, y `rubrica-severidad.md`
+  pierde el mismo sesgo en su nota de contexto sobre severidad.
+  Motivo de fondo: `check-neutralidad.sh --all` pasaba limpio sobre ellas. Es sesgo
+  semántico, que es justo lo que el chequeo mecánico no ve. Registrado en
+  `UNIVERSOS-SINTETICOS.md` § Dónde está en uso.
 
 ## 2026-07-28
 - qa-discovery v1.1: **agnóstica de stack y de dominio**. Nuevo Paso 1.0

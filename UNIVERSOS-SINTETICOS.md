@@ -98,7 +98,8 @@ sus miembros los reservan. Hay un proveedor externo de por medio y un flujo
 
 `qa-discovery/SKILL.md` (tabla de superficies) · `qa-discovery/references/coverage-antipatterns.md`
 · `qa-generator/references/{unitario,integracion,e2e,infraestructura}.md` ·
-`qa-generator/templates/trazabilidad.md` · `git-workflow/SKILL.md` (ejemplo de nombre de rama)
+`qa-generator/templates/trazabilidad.md` · `git-workflow/SKILL.md` (ejemplo de nombre de rama) ·
+`project-audit/references/plantillas-auditoria.md` (rutas de componente del handoff)
 
 ---
 

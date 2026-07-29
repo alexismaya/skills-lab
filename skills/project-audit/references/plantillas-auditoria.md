@@ -5,6 +5,9 @@ Todas viven en el hub **Auditoría** del proyecto en Notion (ver `references/int
 Regla transversal: **sin `file:line` no hay hallazgo** — lo no verificable va a la sección de
 hipótesis, no a la matriz.
 
+> **Sobre los ejemplos.** Las rutas y nombres de las filas de ejemplo usan un dominio ilustrativo
+> (reserva de espacios compartidos). Sustitúyelos por los del proyecto auditado.
+
 ---
 
 ## Fase 0 — Snapshot de reconocimiento
@@ -117,11 +120,11 @@ aquí se emite como handoff, no se redefine). Un componente `muerto` es residuo 
 ## Handoff de auditoría → derivar-proyecto — {Proyecto}
 Alcance auditado (Q3): {pilares}     Base: {rama/commit}
 
-| Componente (ruta)     | Clasificación | Correcciones al cruzar (H-n) | Justificación (por pilar)                        |
-|-----------------------|---------------|------------------------------|--------------------------------------------------|
-| `src/pagos/`          | heredable     | H-2, H-7                     | patrón sano; corregir N+1 (H-2) y validación (H-7) al derivar |
-| `src/legacy-billing/` | no heredable  | —                            | lógica del producto viejo + auth rota (H-1, H-4) |
-| `src/utils/oldsync/`  | muerto        | —                            | sin referencias vivas (H-9); reportar al origen  |
+| Componente (ruta)      | Clasificación | Correcciones al cruzar (H-n) | Justificación (por pilar)                        |
+|------------------------|---------------|------------------------------|--------------------------------------------------|
+| `src/tarifas/`         | heredable     | H-2, H-7                     | patrón sano; corregir N+1 (H-2) y validación (H-7) al derivar |
+| `src/legacy-reservas/` | no heredable  | —                            | lógica del producto viejo + auth rota (H-1, H-4) |
+| `src/utils/oldsync/`   | muerto        | —                            | sin referencias vivas (H-9); reportar al origen  |
 
 Notas:
 - Clasificación **estricta** en la taxonomía de derivar-proyecto: `heredable` / `no heredable`
