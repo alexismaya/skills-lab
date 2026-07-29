@@ -51,7 +51,8 @@ respuesta define el formato del handoff de la Fase 3. Si el usuario no lo sabe a
 registra como P-n y la Fase 3 no se cierra hasta resolverlo.
 
 **Q5 — Restricciones conocidas.** Stack obligatorio, infraestructura o base de datos
-compartida con otros sistemas, requisitos de compliance (PCI, HIPAA, GDPR, etc.), o
+compartida con otros sistemas, requisitos de compliance (normativa sectorial aplicable, o
+cualquier régimen que cubra datos personales, medios de pago o historiales sensibles), o
 límites que la arquitectura objetivo deba respetar. Calibran la severidad de los hallazgos
 y las opciones de la propuesta arquitectónica.
 

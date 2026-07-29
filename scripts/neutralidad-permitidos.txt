@@ -99,11 +99,9 @@ token:FUENTE
 token:FormateadorTarifas
 token:FormularioSolicitud
 token:GATEAN
-token:GDPR
 token:GLOBALES
 token:HACK
 token:HEAD
-token:HIPAA
 token:HIT
 token:HOME
 token:HOSTS
@@ -128,7 +126,6 @@ token:OtroProducto
 token:PARAMETER
 token:PATH
 token:PATRONES
-token:PCI
 token:PDF
 token:PENDIENTE
 token:PERMITIDO

@@ -69,8 +69,8 @@ Los criterios orientan el nivel típico; el impacto real (arriba) manda sobre la
 
 - **No inflar.** Si todo es crítico, nada lo es (antipatrón 2 del SKILL). Reservar "crítica"
   para daño grave e inmediato demostrable.
-- **Compliance de Q5 sube el piso.** Un hallazgo que viola un requisito declarado (PCI/HIPAA/
-  GDPR) escala al menos a alta, típicamente crítica.
+- **Compliance de Q5 sube el piso.** Un hallazgo que viola un requisito de compliance
+  declarado en Q5 escala al menos a alta, típicamente crítica.
 - **Recurso compartido de Q5 sube el impacto.** Un defecto que afecta a un sistema vecino que
   comparte BD/colas/buckets pesa más que uno contenido en el proyecto.
 - **Hipótesis no tienen severidad.** Se listan aparte con qué haría falta para confirmarlas.

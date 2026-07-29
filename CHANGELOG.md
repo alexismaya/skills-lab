@@ -47,6 +47,14 @@
   `UNIVERSOS-SINTETICOS.md` § Dónde está en uso.
 - CLAUDE.md: la tabla de arquitectura no listaba `project-audit`, que sí existía en
   `skills/`, en el contrato compartido y en el README. Añadida como transversal.
+- project-audit: **ningún régimen de compliance nombrado**. La rúbrica de severidad y la Q5
+  de la entrevista citaban tres regímenes concretos. La Q5 se reformula con una pista
+  funcional —normativa sectorial, datos personales, medios de pago, historiales sensibles—
+  que conserva su poder de reconocimiento sin nombrar ninguno; la rúbrica ancla en
+  "compliance declarado en Q5", que ya era el anclaje de su propia escala.
+  Retiradas también las tres entradas correspondientes de
+  `scripts/neutralidad-permitidos.txt`: una allowlist con entradas muertas deja pasar en
+  silencio lo que ya nadie usa. Verificado que la guarda ahora las rechaza.
 
 ## 2026-07-28
 - qa-discovery v1.1: **agnóstica de stack y de dominio**. Nuevo Paso 1.0
