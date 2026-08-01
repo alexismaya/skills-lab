@@ -87,6 +87,7 @@ token:ESTA
 token:EXACTAMENTE
 token:EXACTO
 token:EXAMPLE
+token:EXCLUIR
 token:EXISTENTE
 token:ErrorActionPreference
 token:FALLIDA
@@ -100,6 +101,7 @@ token:FormateadorTarifas
 token:FormularioSolicitud
 token:GATEAN
 token:GLOBALES
+token:GitHub
 token:HACK
 token:HEAD
 token:HIT
@@ -111,6 +113,7 @@ token:IDE
 token:IDOR
 token:IMPLEMENTACIÓN
 token:ItemType
+token:LICENSE
 token:LISIS
 token:LITERALMENTE
 token:LOCAL
@@ -135,6 +138,7 @@ token:POST
 token:PPTX
 token:PROPUESTA
 token:PROYECTO
+token:PowerShell
 token:ProductoViejo
 token:ProveedorClient
 token:ProveedorService

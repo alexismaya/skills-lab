@@ -19,6 +19,11 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEST="$ROOT/scripts/neutralidad-permitidos.txt"
 TMP="$(mktemp)"
 
+# Misma exclusion que check-neutralidad.sh, y por el mismo motivo: sembrar desde
+# el arbol incluyendo un texto de terceros meteria su vocabulario legal en el
+# allowlist de forma permanente. Ambos scripts deben excluir lo mismo.
+EXCLUIR=(':(exclude)LICENSE')
+
 cd "$ROOT"
 
 # Conserva cabecera + secciones host:/forma: tal cual; regenera token:
@@ -28,7 +33,7 @@ awk '/^# --- token/{exit} {print}' "$DEST" > "$TMP"
   echo "# --- token: nombres propios y siglas admitidos ---------------------------"
   echo "# Regenerado por scripts/seed-permitidos.sh el $(date +%Y-%m-%d)."
   echo "# Anadir a mano un token equivale a declararlo neutro de forma permanente."
-  git ls-files --cached --others --exclude-standard -z | xargs -0 cat 2>/dev/null \
+  git ls-files --cached --others --exclude-standard -z -- . "${EXCLUIR[@]}" | xargs -0 cat 2>/dev/null \
     | grep -oE '\b[A-ZÁÉÍÓÚÑÜ][a-záéíóúñü]+[A-ZÁÉÍÓÚÑÜ][A-Za-záéíóúñüÁÉÍÓÚÑÜ]*\b|\b[A-ZÁÉÍÓÚÑÜ]{3,}\b' \
     | sort -u | sed 's/^/token:/'
 } >> "$TMP"

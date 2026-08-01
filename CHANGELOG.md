@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-08-01
+- **Licencia declarada: Apache-2.0.** Hasta ahora el repo era publico pero no
+  usable: sin `LICENSE` aplica copyright por defecto y un tercero no puede
+  clonar, adaptar ni redistribuir las skills — solo verlas y forkearlas dentro
+  de GitHub. Apache-2.0 cubre prosa y scripts con una sola licencia, exige
+  conservar la atribucion y declarar los cambios significativos, y no obliga a
+  nadie a consultar con su departamento legal.
+- `check-neutralidad.sh` y `seed-permitidos.sh`: **exclusion de textos de
+  terceros verbatim** (`EXCLUIR`, aplicada en `--staged`, `--range` y `--all`).
+  El texto de la licencia disparaba 23 tokens y un host, todos vocabulario
+  juridico. Admitirlos en el allowlist habria sido permanente y habria dejado a
+  la capa 4 sin capacidad de discriminar — el mismo modo de fallo que motivo
+  fijar el locale. La exclusion va en ambos scripts: sembrar el allowlist desde
+  el arbol sin ella reintroduciria el vocabulario en la siguiente regeneracion.
+- `.gitignore`: **`private/`**, taller no versionado para borradores de posts,
+  diagramas y decks. Es la unica carpeta del arbol donde puede haber material
+  identificable; `--exclude-standard` hace que la auditoria la ignore por
+  diseno. Lo que sale de ahi hacia una superficie publica pasa antes por
+  `check-neutralidad.sh --msg`, que ya acepta cualquier archivo y cubre asi una
+  superficie que los hooks no alcanzan.
+- `CLAUDE.md`: el bloque de comandos omitia `install-claude.sh`, que es el unico
+  camino de instalacion y el que va a usar quien llegue de fuera; y la
+  descripcion del repo afirmaba dos ejecutables cuando hay seis. La fila de
+  `project-audit` (anadida el 2026-07-29) gana la restriccion que su propio
+  `description` ya declaraba: diagnostica, no modifica el codigo auditado.
+
 ## 2026-07-29
 - sdd-harness-notion v1.3: **variante de análisis para proyecto desde cero**. La rama
   "nuevo" de Q1 declaraba "Fase de Análisis primero" y no llevaba a nada distinto: la

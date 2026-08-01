@@ -32,6 +32,16 @@ LOCAL="${NEUTRALIDAD_LOCAL:-$ROOT/.neutralidad-local}"
 MODO="${1:---staged}"
 FALLOS=0
 
+# Textos de terceros incluidos verbatim: no son contenido de autor y no pueden
+# filtrar material identificable, porque son byte a byte un documento publico
+# conocido. Se excluyen de la inspeccion en vez de permitir sus terminos uno a
+# uno: el vocabulario juridico en mayusculas de una licencia son decenas de
+# tokens que, admitidos para siempre en el allowlist, dejarian a la capa 4 sin
+# capacidad de discriminar — el mismo modo de fallo contra el que se fijo el
+# locale mas arriba. Si se anade otro texto de terceros, va aqui, no al
+# allowlist.
+EXCLUIR=(':(exclude)LICENSE')
+
 rojo()  { printf '\033[31m%s\033[0m\n' "$*" >&2; }
 verde() { printf '\033[32m%s\033[0m\n' "$*"; }
 
@@ -45,18 +55,18 @@ anadidas() { grep '^+' | grep -v '^+++' | sed 's/^+//'; }
 
 case "$MODO" in
   --staged)
-    TEXTO="$(git diff --cached -U0 | anadidas)"
-    NOMBRES="$(git diff --cached --name-only --diff-filter=ACR)" ;;
+    TEXTO="$(git diff --cached -U0 -- . "${EXCLUIR[@]}" | anadidas)"
+    NOMBRES="$(git diff --cached --name-only --diff-filter=ACR -- . "${EXCLUIR[@]}")" ;;
   --msg)
     [ -n "${2:-}" ] || { rojo "uso: --msg <archivo>"; exit 2; }
     TEXTO="$(cat "$2")"; NOMBRES="" ;;
   --range)
     [ -n "${2:-}" ] || { rojo "uso: --range <a>..<b>"; exit 2; }
-    TEXTO="$(git log "$2" --pretty='%B%n%an%n%ae' 2>/dev/null; git diff "$2" -U0 2>/dev/null | anadidas)"
-    NOMBRES="$(git diff "$2" --name-only --diff-filter=ACR 2>/dev/null)" ;;
+    TEXTO="$(git log "$2" --pretty='%B%n%an%n%ae' 2>/dev/null; git diff "$2" -U0 -- . "${EXCLUIR[@]}" 2>/dev/null | anadidas)"
+    NOMBRES="$(git diff "$2" --name-only --diff-filter=ACR -- . "${EXCLUIR[@]}" 2>/dev/null)" ;;
   --all)
-    TEXTO="$(git ls-files --cached --others --exclude-standard -z | xargs -0 cat 2>/dev/null)"
-    NOMBRES="$(git ls-files --cached --others --exclude-standard)" ;;
+    TEXTO="$(git ls-files --cached --others --exclude-standard -z -- . "${EXCLUIR[@]}" | xargs -0 cat 2>/dev/null)"
+    NOMBRES="$(git ls-files --cached --others --exclude-standard -- . "${EXCLUIR[@]}")" ;;
   *)
     echo "uso: check-neutralidad.sh [--staged|--msg <f>|--range <a>..<b>|--all]" >&2; exit 2 ;;
 esac

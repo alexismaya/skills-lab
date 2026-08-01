@@ -113,4 +113,6 @@ Detalle completo en [`CLAUDE.md`](CLAUDE.md).
 
 ## Licencia
 
-Sin licencia declarada todavía.
+[Apache License 2.0](LICENSE). Podés usar, adaptar y redistribuir las skills,
+incluso comercialmente, conservando el aviso de copyright y declarando los
+cambios significativos que hagas sobre los archivos.

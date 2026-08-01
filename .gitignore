@@ -1,6 +1,12 @@
 dist/
 .DS_Store
 
+# Taller privado: borradores de posts, diagramas, decks y notas de casos reales.
+# Nunca se versiona. Es el unico lugar del arbol donde puede haber material
+# identificable, y por eso mismo lo que sale de aqui hacia una superficie
+# publica (repo o post) pasa antes por check-neutralidad.sh --msg.
+private/
+
 # Lista local de terminos prohibidos para la verificacion de neutralidad.
 # Nunca se versiona: una lista de prohibidos publicada republica exactamente
 # lo que se pretende ocultar. Ver scripts/check-neutralidad.sh.

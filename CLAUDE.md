@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A suite of agent skills (Markdown, written in Spanish) for building software projects under the "SDD harness engineering" methodology, with Notion as the task/context/documentation manager. There is no application code, build system, or test suite — the only executables are the packaging script and the neutrality checker.
+A suite of agent skills (Markdown, written in Spanish) for building software projects under the "SDD harness engineering" methodology, with Notion as the task/context/documentation manager. There is no application code, build system, or test suite — the only executables are the shell scripts in `scripts/` (packaging, installation, and the neutrality checker with its hooks).
 
 > **This repo is public and written for third parties** — people who do not know
 > the author's projects and will run these skills against their own systems. Two
@@ -16,6 +16,7 @@ A suite of agent skills (Markdown, written in Spanish) for building software pro
 
 ```bash
 ./scripts/package.sh                     # packages each skills/<name>/ (that has a SKILL.md) into dist/<name>.skill
+./scripts/install-claude.sh [dest]       # installs the skills into ~/.claude/skills (or the given dir); .ps1 variant for PowerShell
 ./scripts/install-hooks.sh               # enables the neutrality hooks (once per clone)
 ./scripts/check-neutralidad.sh --all     # full neutrality audit of the tree
 ./scripts/seed-permitidos.sh             # regenerates the allowlist from the tree (only if the tree is verified clean)
@@ -33,7 +34,7 @@ Most skills operate over a shared Notion project: `project-audit` diagnoses an e
 | Skill | Integración prevista | Role |
 |---|---|---|
 | `derivar-proyecto` | Claude | Discovery for projects derived from an existing one: inheritance matrix, anti-carryover guards |
-| `project-audit` | Any agent | Diagnosis: audit against 4 pillars (security, scalability, performance, maintainability) with `file:line` evidence and justified severity; hands off to `derivar-proyecto` (rehacer) or `sdd-harness-notion` (remediar) |
+| `project-audit` | Any agent | Diagnosis: audit against 4 pillars (security, scalability, performance, maintainability) with `file:line` evidence and justified severity; diagnoses only — never edits the audited code; hands off to `derivar-proyecto` (rehacer) or `sdd-harness-notion` (remediar) |
 | `sdd-harness-notion` | Claude | Construction: phases with human-review gates, stages atomized in Notion, evidence per acceptance criterion |
 | `project-onboarding` | Claude | Documentation: one-shot Notion snapshot of a project (vision, architecture, flows, data model, integrations, setup) with Mermaid diagrams; feeds `project-deck` |
 | `project-deck` | Claude | Presentation: generates a project PPTX as a point-in-time snapshot; audience-driven (technical / stakeholder / user manual); consumes `project-onboarding`'s `diagrams-export` |
