@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-08-23 (2)
+- **`project-doc` v1.0 — nueva skill.** Renderizador de `.docx` que proyecta el corpus de
+  `documentation-master` para una audiencia concreta. Paralela a `project-deck` (que produce
+  el PPTX): misma posición en el ciclo, distinto formato de salida y distinta fuente de
+  consumo (`documentation-master` vs. `project-onboarding`).
+  Seis audiencias: manual de usuario, capacitación, documentación de PM, handover técnico,
+  presentación a cliente y aval de desempeño. La entrevista de arranque detecta la audiencia y
+  calcula la cobertura real del corpus antes de proponer el índice — si un bloque obligatorio
+  falta, la sección se declara bloqueada con su responsable, nunca se rellena con inferencias.
+  Delega la generación del `.docx` en la skill `docx` del entorno (mismo patrón que
+  `project-deck` con la skill `pptx`). No crea páginas en Notion; solo actualiza
+  quirúrgicamente la tabla de Cobertura por proyección del hub Corpus si el proyecto usa
+  la suite.
+  Dos references propios: `doc-templates.md` (seis índices base con fuente de corpus por
+  sección) y `proyecciones-doc.md` (requisitos por audiencia, comportamiento ante bloques
+  faltantes, formato del reporte de borradores). El `interop-notion.md` se inyecta al empacar.
+- **`documentation-master`: dos ajustes de coherencia entre cuerpo y references.**
+  - `extraccion.md §10`: nota al inicio que remite al §Camino corto del SKILL.md cuando el
+    alcance es puntual. Sin ella, un agente ejecutando el reference llegaba al flujo completo
+    de tres formas de alcance sin saber que podía haber tomado el camino corto antes.
+  - `proyecciones.md §Regla de cierre`: excepción explícita para el camino corto. La regla
+    decía "se entrega siempre"; el SKILL.md decía "sin reporte de cobertura" en el camino
+    corto. Alineados: la excepción aplica cuando no hay proyecciones previstas, con condición
+    de reactivación si aparece una durante la ejecución.
+
 ## 2026-08-23
 - **`documentation-master`: tres ajustes derivados de la iteración 1 de evals** (la skill
   sigue sin publicar, así que esto es afinado de v1.0, no una versión nueva).
