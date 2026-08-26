@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-26
+- **Coherencia de la suite antes de publicar las dos skills nuevas.** Nada de esto cambia
+  comportamiento de extraccion ni de renderizado: cierra los huecos que dejaban a
+  `documentation-master` y `project-doc` a medio registrar en las superficies que un tercero
+  lee primero.
+  - **Instaladores:** `documentation-master` faltaba en `install-claude.sh` y `.ps1`. Sin ella
+    instalada, `project-doc` queda apuntando a un corpus que nadie puede producir en ese
+    entorno — la cadena se rompe justo donde el usuario no la ve.
+  - **README:** faltaba la fila de `documentation-master`, y el conteo seguia diciendo "las
+    ocho". La tabla del README es el indice publico de la suite: una skill ausente ahi es una
+    skill que no existe para quien llega de fuera.
+  - **CLAUDE.md:** faltaba la fila de `project-doc` en la tabla de arquitectura.
+  - **`project-doc`: sexta audiencia declarada en el trigger.** El cuerpo, los indices base y
+    `proyecciones-doc.md` definen seis audiencias; la descripcion enumeraba cinco y el §Q2
+    decia "Cinco audiencias posibles". El aval de desempeño quedaba implementado pero no
+    anunciado: la skill no disparaba con la peticion que si sabe atender. Añadido tambien
+    'aval de desempeño' a los literales de disparo. Se conserva palabra por palabra la
+    delimitacion frente a `project-onboarding`, `documentation-master`, `project-deck` y
+    `project-audit`.
+- `scripts/neutralidad-permitidos.txt`: `INTERNO` y `USO`. Son las dos mitades del marcador
+  literal `[SOLO USO INTERNO]` que `project-doc` estampa en toda seccion que proyecte
+  entradas con `visibilidad = interna` (`SOLO` ya estaba en la lista). Vocabulario del
+  metodo, no nombres propios.
+
 ## 2026-08-23 (2)
 - **`project-doc` v1.0 — nueva skill.** Renderizador de `.docx` que proyecta el corpus de
   `documentation-master` para una audiencia concreta. Paralela a `project-deck` (que produce

@@ -35,7 +35,10 @@ $claudeSkills = @(
   "derivar-proyecto",
   "sdd-harness-notion",
   "project-onboarding",
+  "documentation-master",
   "project-deck",
+  "project-doc",
+  "project-audit",
   "git-workflow"
 )
 

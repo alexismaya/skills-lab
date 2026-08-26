@@ -1,6 +1,6 @@
 ---
 name: project-doc
-description: "Generación de un documento Word (.docx) a partir del corpus de documentation-master como entregable puntual (snapshot para una audiencia concreta, no se sincroniza automáticamente con el proyecto). Una entrevista de arranque detecta la AUDIENCIA —manual de usuario, capacitación, documentación de PM, handover técnico o presentación a cliente— y adapta la estructura, el vocabulario, el nivel de detalle y qué bloques del corpus incluir. Consume el corpus ya producido por documentation-master en Notion; si no existe corpus, remite a documentation-master primero. Usar esta skill SIEMPRE que el usuario quiera: generar un documento Word del proyecto, un 'informe', 'manual', 'docx', 'Word', 'documentación para el cliente', 'documentación de PM', 'handover técnico', 'material de capacitación', o 'documento de entrega'; también ante menciones de 'exportar el corpus', 'proyectar la documentación', 'generar el .docx' o 'redactar el documento'. NO usar para documentar en Notion (eso es project-onboarding o documentation-master), para generar el PPTX (eso es project-deck), para levantar o actualizar el corpus (eso es documentation-master), ni para evaluar calidad (eso es project-audit). Si el usuario quiere documentar Y generar el .docx, recomendar correr documentation-master primero."
+description: "Generación de un documento Word (.docx) a partir del corpus de documentation-master como entregable puntual (snapshot para una audiencia concreta, no se sincroniza automáticamente con el proyecto). Una entrevista de arranque detecta la AUDIENCIA —manual de usuario, capacitación, documentación de PM, handover técnico, presentación a cliente o aval de desempeño— y adapta la estructura, el vocabulario, el nivel de detalle y qué bloques del corpus incluir. Consume el corpus ya producido por documentation-master en Notion; si no existe corpus, remite a documentation-master primero. Usar esta skill SIEMPRE que el usuario quiera: generar un documento Word del proyecto, un 'informe', 'manual', 'docx', 'Word', 'documentación para el cliente', 'documentación de PM', 'handover técnico', 'material de capacitación', 'aval de desempeño', o 'documento de entrega'; también ante menciones de 'exportar el corpus', 'proyectar la documentación', 'generar el .docx' o 'redactar el documento'. NO usar para documentar en Notion (eso es project-onboarding o documentation-master), para generar el PPTX (eso es project-deck), para levantar o actualizar el corpus (eso es documentation-master), ni para evaluar calidad (eso es project-audit). Si el usuario quiere documentar Y generar el .docx, recomendar correr documentation-master primero."
 ---
 
 # Proyección del corpus a documento Word (.docx)
@@ -66,7 +66,7 @@ son posibles y cuáles quedan bloqueadas.
 
 ### Q2 — Audiencia (define la estructura del documento)
 
-Cinco audiencias posibles; cada una fija estructura, vocabulario, nivel de detalle y qué
+Seis audiencias posibles; cada una fija estructura, vocabulario, nivel de detalle y qué
 bloques del corpus son obligatorios vs. omitibles. Ver §Audiencias y sus requisitos.
 
 Si la audiencia no es clara, dos preguntas de desempate:

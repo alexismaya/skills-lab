@@ -23,10 +23,12 @@ código de aplicación ni suite de pruebas.
 | [`qa-discovery`](skills/qa-discovery/) | **Calidad (plan)** — detecta el stack, mapea superficies de prueba y las prioriza por riesgo de negocio |
 | [`qa-generator`](skills/qa-generator/) | **Calidad (ejecución)** — materializa suites por modo: unitario, integración, e2e, infraestructura |
 | [`project-onboarding`](skills/project-onboarding/) | **Documentación** — snapshot del proyecto en Notion con diagramas Mermaid; lo que no tiene fuente se marca pendiente, nunca se inventa |
+| [`documentation-master`](skills/documentation-master/) | **Extracción** — levanta la lógica real en un corpus versionado en Notion: afirmaciones atómicas con procedencia y evidencia `file:línea`, o `NO DETERMINADO` con motivo; no genera archivos |
 | [`project-deck`](skills/project-deck/) | **Presentación** — genera un PPTX adaptado a la audiencia (técnica / cliente / manual de usuario) |
+| [`project-doc`](skills/project-doc/) | **Documento** — proyecta el corpus de `documentation-master` a un `.docx` adaptado a la audiencia (manual de usuario, capacitación, PM, handover técnico, cliente, aval de desempeño) |
 | [`git-workflow`](skills/git-workflow/) | **Transversal** — gobierna el uso de Git por el agente en cualquier repo: propone y explica, nunca decide solo |
 
-Las ocho comparten **tabla única de preguntas abiertas** por proyecto, página de
+Las diez comparten **tabla única de preguntas abiertas** por proyecto, página de
 Lecciones, **handoffs como interfaz** entre skills, y gates cruzados — definido
 todo en [`shared/interop-notion.md`](shared/interop-notion.md).
 

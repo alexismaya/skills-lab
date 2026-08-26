@@ -17,30 +17,27 @@
 #
 # Anadir una entrada equivale a declarar ese termino neutro de forma permanente.
 # Hazlo a conciencia y justifica el porque en el mensaje del commit.
-
 # --- correo: direcciones y dominios de correo admitidos ----------------------
 # Correos de no-respuesta de las plataformas usadas en los trailers de commit.
 # Cualquier otra direccion se bloquea: un correo personal en un repo publico es
 # dato identificable, y en el historial no se quita editando archivos.
-correo:noreply@anthropic.com
-correo:users.noreply.github.com
-
 # --- host: dominios admitidos ------------------------------------------------
-host:example.com
-host:example.org
-host:example.net
-host:github.com
-host:claude.ai
-host:anthropic.com
-
 # --- forma: nombres de repo/servicio del universo sintetico ------------------
-forma:api-catalogos
-forma:portal-front
-forma:admin-front
-
 # --- token: nombres propios y siglas admitidos ---------------------------
 # Regenerado por scripts/seed-permitidos.sh el 2026-07-28.
 # Anadir a mano un token equivale a declararlo neutro de forma permanente.
+
+correo:noreply@anthropic.com
+correo:users.noreply.github.com
+forma:admin-front
+forma:api-catalogos
+forma:portal-front
+host:anthropic.com
+host:claude.ai
+host:example.com
+host:example.net
+host:example.org
+host:github.com
 token:ACCIÓN
 token:ACR
 token:AMBAS
@@ -81,6 +78,8 @@ token:DESC
 token:DESCRIPTION
 token:DESPUES
 token:DEST
+token:DETERMINADO
+token:DOCX
 token:DOM
 token:DocumentoTest
 token:ESTA
@@ -112,6 +111,7 @@ token:HTTP
 token:IDE
 token:IDOR
 token:IMPLEMENTACIÓN
+token:INTERNO
 token:ItemType
 token:LICENSE
 token:LISIS
@@ -178,6 +178,7 @@ token:TestCase
 token:UAT
 token:UNIVERSOS
 token:URL
+token:USO
 token:UTF
 token:VERIFICACIÓN
 token:VINCULANTES
