@@ -13,6 +13,7 @@ especialidad; este documento define lo que comparten para no pisarse.
 ├── Documentación               ← opcional (Q3 de la entrevista)
 ├── Matriz de herencia          ← solo proyectos derivados (derivar-proyecto)
 ├── Auditoría                   ← solo proyectos auditados (project-audit)
+├── Corpus                      ← contexto persistente (documentation-master)
 ├── QA                          ← hub de calidad (qa-discovery / qa-generator)
 ├── Lecciones SDD               ← o enlace a la página global del usuario
 └── Fase 1..N                   ← hub de fase → subpáginas de etapa (SDD harness)
@@ -68,6 +69,32 @@ reorganiza lo que existe.
    skills: mapa de lo hecho, estado de Ps, evidencia por criterio (artefactos,
    no checkboxes), desviaciones justificadas, pendientes con responsable. Un
    gate se revisa igual sin importar qué skill produjo el entregable.
+
+8. **Corpus del proyecto (interfaz mínima).** Un proyecto puede tener un hub **Corpus**:
+   afirmaciones atómicas sobre lo que el sistema hace realmente, con su respaldo, pensadas
+   como contexto persistente entre sesiones y como insumo de los renderizables. Su dueña es
+   `documentation-master` — **es la única skill que escribe entradas**; las demás aportan
+   conocimiento a través de sus propios artefactos y ella lo incorpora declarando de dónde
+   vino. Lo que cualquier skill de la suite puede asumir al leerlo:
+
+   - **Toda entrada declara `procedencia`**: `codigo` (respaldo `archivo:línea`) ·
+     `entrevista` (quién y cuándo) · `auditoria` (hallazgo de origen) · `historial` (commit,
+     PR o incidente). Sin procedencia no hay entrada.
+   - **Campos legibles garantizados**: `id` (estable entre ejecuciones), `afirmacion` (una
+     frase, sin prosa redactada), `bloque`, `procedencia`, `respaldo`, `ancla` (la referencia
+     de código con la que se capturó), `estado` (`nuevo` / `vigente` / `por revalidar` /
+     `obsoleto`) y `visibilidad` (`externa` / `interna`). Un renderizador consume por estos
+     campos y por ninguno más.
+   - **`visibilidad = interna` significa no publicar**, no "publicar con cuidado".
+   - **Las relaciones del corpus hacia tablas ajenas son unidireccionales**: se apunta sin
+     crear propiedad recíproca. Ninguna skill añade columnas a las tablas de otra; extender
+     es relacionar, no mutar. Si una integración necesitara de verdad una columna ajena, es
+     enmienda a este contrato, no una decisión de ejecución.
+
+   El esquema completo (campos adicionales, vocabularios, reglas de escritura y ciclo de
+   vida) vive en `documentation-master/references/corpus.md`. **Ampliarlo no requiere
+   enmendar este contrato; quitar o renombrar cualquiera de los campos listados aquí, sí** —
+   son los que las demás skills tienen derecho a dar por ciertos.
 
 ## Nota operativa (integraciones distintas)
 

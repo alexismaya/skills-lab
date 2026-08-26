@@ -1,5 +1,99 @@
 # Changelog
 
+## 2026-08-23
+- **`documentation-master`: tres ajustes derivados de la iteración 1 de evals** (la skill
+  sigue sin publicar, así que esto es afinado de v1.0, no una versión nueva).
+- **Camino corto.** Para alcance puntual —uno o pocos archivos, un módulo aislado, sin
+  proyecciones previstas— la entrevista se reduce a alcance y destino, no hay plan de etapas,
+  ni gates intermedios, ni reporte de cobertura: se escribe directo al corpus. Sustituye a la
+  sección "calibrar el esfuerzo", que describía la intención sin decir qué se quita.
+  Lo que **no** se relaja: evidencia, procedencia y la marca de lo indeterminable — encoger
+  eso convierte a la skill en una lectura atenta con más pasos.
+  Dos guardas, porque un atajo sin guardas es una puerta trasera a los gates: **no aplica**
+  con multi-repo, con proyecciones previstas o si el resultado alimentará un entregable; y se
+  **propone**, nunca se asume. Ante la duda, camino largo.
+- **Corpus autodescriptivo.** La cabecera del corpus en Notion declara las reglas que lo
+  gobiernan (procedencias y su respaldo, formato del ancla, estados, qué significa cada
+  marca). El motivo es que el corpus se lee muchas más veces de las que se escribe, y casi
+  siempre desde una sesión que no cargó la skill: quien abra la tabla tiene que heredar la
+  disciplina de la tabla misma. La prueba es directa — **un corpus que solo se entiende con
+  la skill puesta está mal construido**. Va en `corpus.md` §10 y en la operación de Notion;
+  no toca la interfaz mínima de `interop-notion.md` §8, que sigue siendo la misma.
+- **Presupuesto de prosa.** Un modelo competente ya lee código con rigor y ya evita inventar
+  si se lo piden; extenderse en eso gasta contexto sin mover el resultado. R1 queda enunciada
+  y corta, y la densidad se movió a donde la brecha es real: cuándo derivar a otra skill
+  (incluida la frontera por tamaño, que se confunde con la frontera por profundidad), cómo se
+  declara **bloqueada** una proyección, cómo se **nombra al responsable** de un bloque
+  faltante, y por qué no se genera el archivo aunque insistan.
+  Riesgo declarado, a vigilar en la iteración 2: acortar R1 puede hacer caer los casos
+  `logica-en-BD` y `dato-de-entrevista`, hoy en 4/4 con margen estrecho. Si caen, la causa es
+  este recorte, no el camino corto.
+- **Descripción (trigger) actualizada a la v2 medida.** Gana dos cosas que la v1 no cubría y
+  que el cuerpo de la skill sí implementa: la **re-ejecución incremental** —"saber qué parte
+  de lo ya documentado dejó de ser cierta tras nuevos commits", más el literal "actualizar el
+  corpus"— y el **alcance de un solo módulo, handler o función** cuando lo que se pide es
+  certeza con evidencia y no una explicación rápida. Esa segunda frase dejó de ser una
+  promesa suelta al entrar el camino corto: ahora la descripción anuncia un alcance que el
+  cuerpo sabe atender sin imponer seis etapas.
+  Los tres negativos que fallaban en la v1 eran positivos de re-ejecución y de alcance
+  puntual, que es exactamente lo que la v2 añade. Puntaje sobre casos válidos: **v1 14/17 →
+  v2 16/17**; el único fallo que queda es un positivo, no un sobre-disparo. La delimitación
+  frente a `project-onboarding`, `project-audit`, `project-deck` y `project-doc` se conserva
+  palabra por palabra.
+- **Validez de las corridas de triggering (auditoría, sin cambio de texto).** Una corrida solo
+  mide delimitación si las skills competidoras están instaladas en el entorno; sin rival
+  cargado, un negativo aprueba por ausencia. En el entorno de la iteración 1 faltaban
+  `project-audit` y `qa-discovery` (y `project-doc`, que ni existe todavía en la suite), así
+  que **tres negativos quedaron descartados** y el número de sobre-disparo de esa corrida no
+  se usa. Revisado también el resto de la suite: ninguna otra descripción se optimizó con esa
+  herramienta —el instrumental es del 2026-08-22 y todas las demás llevan sin tocarse desde
+  julio—, así que no hay texto ajustado contra una señal rota.
+
+## 2026-08-22
+- **Skill nueva: `documentation-master` v1.0.** Extrae por etapas la lógica real de un
+  proyecto existente y la consolida en Notion como **corpus** —afirmaciones atómicas con
+  procedencia y respaldo— pensado como contexto persistente entre sesiones y como insumo de
+  los renderizadores. Su entregable no es un documento: es el corpus más el contrato que
+  permite proyectarlo a varias audiencias.
+  La decisión de diseño que la gobierna es **separar extracción de renderizado**. Con varias
+  audiencias previstas (manual de usuario, capacitación, PM, cliente, aval de desempeño) y
+  varios formatos, mezclarlas obligaría a tocar la lógica de extracción cada vez que aparece
+  una audiencia nueva.
+  Cuatro reglas no negociables: **cero invención** (evidencia `archivo:línea` o
+  `NO DETERMINADO` con motivo; prohibido describir intención sin fuente), **nada sin
+  aprobación** (gate por etapa), **frontera con `project-onboarding`** (su inventario se
+  consume y se valida, nunca se reescribe: es ownership ajeno) y **procedencia explícita**.
+  Esta última resuelve la confusión más cara del diseño: un dato de runbook obtenido en
+  entrevista **no es** `NO DETERMINADO` — es procedencia `entrevista`. Confundirlos hace que
+  el corpus parezca más débil de lo que es; el error simétrico lo hace parecer más fuerte.
+  El plan de etapas **no está hardcodeado**: se deriva del alcance declarado (un repo /
+  multi-repo / flujo transversal), y cada etapa declara su perfil de ejecutor para no gastar
+  capacidad de juicio en transcripción. Cinco references: `corpus.md` (esquema y ciclo de
+  vida), `extraccion.md` (bloques, catálogo de reglas implícitas, criterios de evidencia),
+  `notion.md`, `incremental.md` (anclaje y caducidad) y `proyecciones.md` (qué exige cada
+  audiencia).
+- **`interop-notion.md`: enmienda — regla 8, interfaz mínima del corpus.** El contrato gana
+  la página `Corpus` en la estructura canónica y la interfaz que las demás skills pueden dar
+  por cierta al leerlo: procedencia obligatoria, campos legibles garantizados, y
+  `visibilidad = interna` como *no publicar*, no como *publicar con cuidado*.
+  Se optó por un reparto **híbrido** en vez de meter el esquema completo: interop fija el
+  mínimo compartido —igual que ya hacía con la tabla P— y el esquema entero vive en
+  `documentation-master/references/corpus.md`. Ampliarlo no enmienda el contrato; quitar o
+  renombrar un campo de los listados, sí. Sin esa asimetría, cada campo nuevo sería una
+  enmienda que afecta a toda la suite.
+  Las relaciones del corpus hacia tablas ajenas son **unidireccionales**. El motivo es
+  concreto: en Notion una relación bidireccional crea propiedad recíproca en la tabla
+  destino, o sea que "extender por relación y no por mutación" solo se cumple literalmente
+  en un sentido. El precio —desde la tabla ajena no se ve el vínculo inverso— es más barato
+  que la alternativa de cada skill añadiendo columnas a las tablas de las demás.
+- **`.gitignore`: `.claude/skills/`, `.agents/` y `skills-lock.json`.** El instalador de
+  skills deja sus herramientas dentro del árbol. Versionarlas republicaría código de
+  terceros en un repo público y además rompía `check-neutralidad.sh --all`, que acababa
+  auditando vocabulario ajeno y produciendo un fallo que no era del contenido propio.
+- `scripts/neutralidad-permitidos.txt`: `DETERMINADO` y `DOCX`. El primero es el marcador
+  literal de la skill nueva; el segundo, un nombre de formato. Ambos son vocabulario del
+  método, no nombres propios.
+
 ## 2026-08-01
 - **Licencia declarada: Apache-2.0.** Hasta ahora el repo era publico pero no
   usable: sin `LICENSE` aplica copyright por defecto y un tercero no puede

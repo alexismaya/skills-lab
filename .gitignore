@@ -11,3 +11,12 @@ private/
 # Nunca se versiona: una lista de prohibidos publicada republica exactamente
 # lo que se pretende ocultar. Ver scripts/check-neutralidad.sh.
 .neutralidad-local
+
+# Herramientas instaladas localmente por el instalador de skills (skill-creator
+# y companeras) y su estado. No son parte de la suite: versionarlas
+# republicaria codigo de terceros dentro de un repo publico, y ademas rompe la
+# auditoria de neutralidad, que acabaria analizando vocabulario ajeno.
+.claude/skills/
+.claude/commands/
+.agents/
+skills-lock.json
