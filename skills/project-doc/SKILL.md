@@ -108,7 +108,7 @@ Los bloques del corpus y quién los produce cuando faltan están en
 | Manual de usuario | `superficie`, `logica-negocio` (flujos de interfaz) | No técnico, en términos del usuario | Solo `externa` |
 | Capacitación | `superficie`, `logica-negocio`, `integraciones`, `operacion` | Mixto: técnico donde el operador lo necesita | Interna |
 | Documentación de PM | `zonas-oscuras`, `riesgo`, `operacion` | Gestión, no implementación | Interna |
-| Handover técnico | `superficie`, `logica-negocio`, `modelo-datos`, `integraciones`, `zonas-oscuras` | Técnico completo | Interna |
+| Handover técnico | `superficie` (a profundidad de contrato), `logica-negocio`, `modelo-datos`, `integraciones`, `zonas-oscuras`, `operacion`, `pruebas` | Técnico completo | Interna |
 | Presentación a cliente | `superficie` (alto nivel) | Negocio, sin código ni jerga interna | Solo `externa` |
 | Aval de desempeño | `logica-negocio`, `trayectoria` | Evidencia, no narrativa | Interna |
 
@@ -131,7 +131,11 @@ puntos de partida:
   oscuras y deuda declarada · riesgos abiertos · coste operativo · pendientes con responsable.
 - **Handover técnico:** portada · arquitectura y stack · modelo de datos · flujos y lógica de
   negocio · integraciones y contratos · zonas oscuras y trampas conocidas · setup y
-  configuración · pendientes con prioridad.
+  configuración · **guía de incorporación** (puesta en marcha · ambientes · accesos ·
+  verificación de extremo a extremo · ejemplos de invocación · estado y alcance vigente ·
+  backlog priorizado · criterios de liberación y responsables · checklist de recepción) ·
+  glosario. La guía de incorporación es la mitad que decide si el receptor puede trabajar el
+  primer día; sin `operacion` en el corpus, se emite bloqueada, no se omite.
 - **Presentación a cliente:** portada · propuesta de valor · capacidades principales · flujos
   de usuario (alto nivel) · estado y próximos pasos.
 - **Aval de desempeño:** portada · ámbito del aval · contribuciones con evidencia · trayectoria

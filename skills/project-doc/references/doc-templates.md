@@ -106,12 +106,47 @@ trampas y zonas oscuras. Uso interno.
 | 6 | Integraciones y contratos reales | APIs, colas, webhooks — con el comportamiento real ante fallo | `integraciones` — **obligatorio** |
 | 7 | Zonas oscuras y trampas conocidas | Código muerto, duplicidades, contradicciones, `NO DETERMINADO` | `zonas-oscuras` — **obligatorio** |
 | 8 | Setup y configuración | Variables de entorno, secretos referenciados (nunca valores), dependencias | `integraciones` + `superficie` |
-| 9 | Pendientes y prioridad | Qué falta, con su P-n y su bloque de corpus si aplica | P-n del proyecto + borradores |
-| 10 | Glosario técnico | Nombres de entidades, handlers, servicios tal como los usa el código | `logica-negocio` + `modelo-datos` (nomenclatura) |
+
+### Guía de incorporación (§9–§17)
+
+Las secciones anteriores explican el sistema. Estas son las que permiten **operarlo**, y sin
+ellas el documento describe un sistema que el receptor todavía no puede tocar.
+
+| # | Sección | Contenido | Fuente de corpus |
+|---|---|---|---|
+| 9 | Puesta en marcha desde cero | La secuencia completa hasta ver el sistema respondiendo; por cada paso, qué demuestra que salió bien, y cuál falla siempre la primera vez | `operacion` — **obligatorio**; si no existe, sección bloqueada |
+| 10 | Ambientes y a qué apunta cada uno | Qué ambientes hay, contra qué datos y qué versión de cada servicio externo corre cada uno, y qué comparten entre sí | `operacion` — **obligatorio** |
+| 11 | Accesos necesarios | Qué pedir, a quién y con cuánta antelación, por rol. Nombre del acceso y otorgante — nunca valores ni cuentas concretas | `operacion` — **obligatorio** |
+| 12 | Verificación de extremo a extremo | La secuencia manual con la que se comprueba que el ambiente sirve, y qué suites automatizadas existen | `operacion` (secuencia) + `pruebas` — **obligatorio** |
+| 13 | Ejemplos de invocación | Por operación crítica: qué recibe, qué devuelve, con qué errores falla | `superficie` a profundidad de contrato de invocación — **obligatorio** |
+| 14 | Estado actual y alcance vigente | Qué está operativo, qué a medias, qué se sacó de alcance y desde cuándo | `operacion` + `superficie` |
+| 15 | Backlog técnico priorizado | Los hallazgos ordenados por severidad, con responsable y recomendación | `zonas-oscuras` + `riesgo` + P-n del proyecto |
+| 16 | Criterios de liberación y responsables | Qué se cumple antes de liberar, quién autoriza, a quién se escala cada tipo de fallo — por rol y canal | `operacion` — **obligatorio** |
+| 17 | Checklist de recepción | Casillas verificables derivadas de §9–§13: levanté, conecté, obtuve identidad, ejecuté el flujo, comprobé la integración | Derivada de las secciones anteriores — sin fuente propia |
+| 18 | Glosario técnico | Nombres de entidades, handlers, servicios tal como los usa el código | `logica-negocio` + `modelo-datos` (nomenclatura) |
+
+**§15 no es una lista de pendientes, es una priorización.** Su materia prima es §7 (zonas
+oscuras) más el bloque `riesgo`: los mismos hallazgos, ordenados por severidad y con un
+responsable al lado. Sin `riesgo` la severidad no tiene origen declarado — se marca la
+columna como borrador con responsable `project-audit`, no se asigna por criterio propio del
+renderizador. Y **qué construir después no va aquí**: eso es priorización de producto, y su
+sitio es `sdd-harness-notion` o el backlog del proyecto.
+
+**§17 no puede bloquearse** —no tiene fuente propia— pero **sí hereda los bloqueos**: toda
+casilla que dependa de una sección bloqueada se emite marcada, no se omite. Un checklist con
+las casillas fáciles y sin las que faltan es la forma más limpia de que un hueco pase
+inadvertido.
+
+**Orden.** §2–§8 explican, §9–§17 habilitan. Cuál va primero depende de por qué se entrega:
+si el receptor llega sin contexto del sistema, explicación primero; si llega a retomar el
+desarrollo esta semana, la guía de incorporación se mueve al frente. Se pregunta en la
+propuesta de índice, no se decide por defecto.
 
 **Nota:** esta es la proyección más fiel al corpus crudo. Las entradas con procedencia
 `entrevista` se marcan explícitamente — quien recibe el sistema necesita saber qué está
-demostrado en código y qué fue declarado por una persona.
+demostrado en código y qué fue declarado por una persona. En §9–§12 y §16 serán **casi todas**:
+lo operativo se captura preguntando, y que venga de una persona no lo degrada mientras se sepa
+de quién y cuándo.
 
 ---
 

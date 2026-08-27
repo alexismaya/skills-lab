@@ -23,9 +23,10 @@ renderizador: cómo se comporta esta skill cuando los bloques faltan o están in
 | `modelo-datos` | `—` | *des.* | `—` | **obl.** | `—` | `—` |
 | `integraciones` | *des.* | **obl.** | *des.* | **obl.** | `—` | `—` |
 | `zonas-oscuras` | `—` | *des.* | **obl.** | **obl.** | `—` | *des.* |
-| `operacion` | *des.* | **obl.** | **obl.** | *des.* | `—` | `—` |
+| `operacion` | *des.* | **obl.** | **obl.** | **obl.** | `—` | `—` |
 | `riesgo` | `—` | `—` | **obl.** | *des.* | `—` | `—` |
 | `trayectoria` | `—` | `—` | *des.* | `—` | `—` | **obl.** |
+| `pruebas` | `—` | *des.* | *des.* | **obl.** | `—` | *des.* |
 
 ## Por audiencia: qué pasa cuando falta un bloque
 
@@ -70,6 +71,16 @@ renderizador: cómo se comporta esta skill cuando los bloques faltan o están in
 
 - Todos los bloques estructurales son obligatorios. Si alguno falta, la sección
   correspondiente se declara bloqueada con su responsable.
+- **`operacion` falta:** quedan bloqueadas las secciones de puesta en marcha, ambientes,
+  accesos, criterios de liberación y responsables — es decir, toda la guía de incorporación.
+  Responsable: `documentation-master`, que lo captura en entrevista con quien opera el
+  sistema. **Esta es la carencia que más se subestima en esta audiencia:** el documento se ve
+  completo sin ella, porque todo lo estructural tiene evidencia, y aun así el receptor no
+  puede levantar el sistema el primer día. Un handover sin puesta en marcha describe el
+  sistema; no lo entrega.
+- **`pruebas` falta:** queda bloqueada la sección de verificación. Responsable `qa-discovery`.
+  El receptor no tiene con qué confirmar que lo que levantó funciona, y todo cambio que haga
+  después parte de una base que nunca validó.
 - **`zonas-oscuras` nunca se omite** en un handover: entregar un sistema sin su lista de
   trampas es entregar la mitad. Si falta en el corpus, es un bloque a producir antes del
   handover, no algo que omitir.
@@ -126,7 +137,8 @@ a quien lo produce, con nombre concreto.
 
 | Bloque faltante | Quién lo produce | Qué NO se hace en su lugar |
 |---|---|---|
-| `operacion` | Skill de captura operativa (entrevista) | Deducir procedimientos del código |
+| `operacion` | `documentation-master`, en entrevista dirigida con quien opera el sistema | Deducir procedimientos del código: reconstruir la puesta en marcha leyendo el gestor de dependencias produce un procedimiento verosímil que nadie ha ejecutado |
+| `pruebas` | `qa-discovery` (qué está cubierto) / `qa-generator` (las suites) | Redactar casos de prueba desde el corpus, o dar por cubierto un flujo porque exista un archivo de prueba con su nombre |
 | `riesgo` | `project-audit` | Emitir juicios de calidad o severidad |
 | `trayectoria` | `git-workflow` | Reconstruir la historia leyendo el estado actual del corpus |
 | `logica-negocio` incompleto | `documentation-master` | Inferir la lógica de los nombres de función |
