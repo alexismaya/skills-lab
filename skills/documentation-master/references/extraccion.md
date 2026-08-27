@@ -30,7 +30,8 @@ verificar esto abriendo lo que cito, sin repetir mi análisis?**
   declaración y su uso, ambas.
 - Insuficiente: el archivo entero para un hecho de lógica; el nombre de una función como
   prueba de lo que hace; un test como prueba del comportamiento de producción (el test prueba
-  lo que el test ejercita, y eso es otra afirmación).
+  lo que el test ejercita, y eso es otra afirmación — que pertenece al bloque `pruebas`, cuyo
+  dueño es `qa-discovery`).
 - **Un nombre no es evidencia.** `validarDisponibilidad` puede no validar nada. Lo que se
   cita es el cuerpo.
 - **Un comentario es evidencia de la intención declarada, no del comportamiento.** Si el
@@ -45,6 +46,28 @@ jobs programados, consumidores de cola, manejadores de eventos, tareas de arranq
 **Qué se registra por cada uno.** Firma real (verbo y ruta, o nombre del comando/job),
 handler que lo atiende con su `archivo:línea`, y si tiene o no guarda de autenticación o
 autorización —**verificada en el código**, no supuesta por convención del framework—.
+
+**Profundidad: mapa o contrato.** Lo anterior es el **mapa de superficie** y basta para saber
+qué existe. No basta para **usarlo**: quien recibe un sistema no puede invocar nada con una
+firma y un nombre de handler. Si Q4 pidió *contrato de invocación* —obligatorio cuando Q3
+previó handover técnico o capacitación—, por cada punto de entrada se registra además:
+
+- **Qué recibe**: parámetros y campos, cuáles son obligatorios y qué forma exige cada uno,
+  citando el validador o el tipo que lo impone. No la documentación del repo: la validación
+  que corre.
+- **Qué devuelve** en el caso de éxito, citando el punto donde se construye la respuesta.
+- **Con qué errores falla**: cada rama de rechazo con su condición y su `archivo:línea`. Es la
+  mitad que se omite siempre y la única que se consulta cuando algo no funciona.
+
+Un ejemplo de invocación se construye **solo** con lo demostrado en esas tres citas. Rellenar
+un campo con un valor plausible para que el ejemplo se vea completo es el antipatrón 1 del
+SKILL.md con otro disfraz: el ejemplo se vuelve verosímil, deja de ser verificable, y quien lo
+copie va a depurar el sistema en vez del ejemplo. Un campo cuyo valor válido no se pueda
+demostrar se marca `NO DETERMINADO` dentro del ejemplo.
+
+Esta profundidad multiplica el coste del bloque: se aplica a los puntos de entrada de los
+flujos críticos, no a los cientos que puede tener un repo. Cuáles son, lo decide el alcance
+declarado en la entrevista, no el criterio del ejecutor de la etapa.
 
 **Trampas frecuentes.**
 - Rutas registradas dinámicamente (por convención de nombres, por escaneo de directorios):

@@ -107,6 +107,16 @@ Es decir: el código donde vivía lo que esa persona describía cambió de verda
 tocó. Revisarla significa volver a preguntar, con la pregunta ya acotada: "esto lo confirmaste
 en tal fecha; el flujo cambió aquí — ¿sigue siendo así?".
 
+**El bloque `operacion` tiene una parte que esta regla no alcanza.** Quién otorga un acceso,
+quién autoriza una liberación, a quién se escala un fallo: no cuelgan de ninguna entidad de
+código, así que ninguna entrada `obsoleto` las va a marcar nunca — y son justo las que más
+rápido dejan de ser ciertas, porque cambian cuando cambia la gente, no cuando cambia el
+sistema. Esas entradas se marcan para revisión **por fecha de captura**, no por ancla: al
+re-ejecutar, toda entrada de `operacion` sin entidad de código asociada capturada hace más de
+un ciclo de trabajo del proyecto se lista para reconfirmar. Es la única caducidad del corpus
+que no se calcula desde el código, y existe porque el error aquí no se nota: un contacto
+obsoleto se lee igual de bien que uno vigente.
+
 ## 6. Efecto sobre las proyecciones
 
 La tabla de **Cobertura por proyección** registra con qué ancla se emitió cada cobertura.

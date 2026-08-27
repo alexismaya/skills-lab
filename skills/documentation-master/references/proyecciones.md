@@ -18,9 +18,12 @@ buscar**. Un manual de usuario necesita los flujos vistos desde la interfaz, que
 de extracción distinto al de la lógica interna. Descubrirlo al final significa volver a
 extraer.
 
-Y hay bloques que esta skill **no puede producir**. Declararlos faltantes en la entrevista
-convierte un fracaso al cierre en una decisión informada al principio: el usuario sabe desde
-el día uno que su capacitación necesita una captura operativa que aún no existe.
+Y cambia **de dónde** hay que sacarlo. Algunos bloques no se leen en el repo: `operacion` se
+captura preguntando a quien opera el sistema —hay que agendar esa entrevista, y eso depende de
+la disponibilidad de una persona—, y `riesgo`, `trayectoria` y `pruebas` los produce otra
+skill. Saberlo en la entrevista convierte un fracaso al cierre en una decisión informada al
+principio: el usuario sabe desde el día uno que su handover exige media jornada de quien
+levanta el sistema, o que no habrá handover completo.
 
 ## Requisitos por proyección
 
@@ -34,9 +37,10 @@ sin él, declarando el hueco) · — (no lo consume).
 | `modelo-datos` | — | *des.* | — | — | **obl.** | *des.* |
 | `integraciones` | *des.* | **obl.** | *des.* | *des.* | **obl.** | *des.* |
 | `zonas-oscuras` | — | *des.* | **obl.** | — | **obl.** | *des.* |
-| `operacion` | *des.* | **obl.** | **obl.** | — | *des.* | — |
+| `operacion` | *des.* | **obl.** | **obl.** | — | **obl.** | — |
 | `riesgo` | — | — | **obl.** | — | *des.* | — |
 | `trayectoria` | — | — | *des.* | *des.* | — | **obl.** |
+| `pruebas` | — | *des.* | *des.* | — | **obl.** | *des.* |
 
 ### Manual de usuario
 
@@ -54,12 +58,16 @@ sin él, declarando el hueco) · — (no lo consume).
 
 - **Detalle:** el más alto de todas las proyecciones, porque tiene que cubrir el error: qué
   falla, cómo se ve cuando falla, y qué hacer entonces.
-- **Depende críticamente del bloque `operacion`**, que esta skill **no produce**. Si no existe
-  la captura operativa, la proyección se declara **bloqueada** y se nombra al responsable —no
-  se improvisa un runbook a partir del código, que es exactamente lo que el código no dice—.
+- **Depende críticamente del bloque `operacion`**, que no se extrae del código: se captura en
+  entrevista dirigida (SKILL.md §Captura operativa). Si nadie puede responderla, la proyección
+  se declara **bloqueada** y se nombra al responsable por su rol —no se improvisa un runbook a
+  partir del código, que es exactamente lo que el código no dice—.
 - **Omite:** riesgo (es material de otra conversación).
 - **Las `zonas-oscuras` son deseables aquí**, aunque suene contraintuitivo: quien se capacita
   se va a topar con el comportamiento raro, y es mejor que llegue advertido.
+- **`pruebas` es deseable, no obligatorio:** aporta la traza de verificación que convierte un
+  procedimiento en algo comprobable. Su ausencia no bloquea la capacitación; la vuelve
+  narrativa.
 
 ### Documentación de PM
 
@@ -83,8 +91,19 @@ sin él, declarando el hueco) · — (no lo consume).
 - **Detalle:** máximo en mecánica. Es la proyección que más se parece al corpus crudo.
 - **Todo lo estructural es obligatorio**, `zonas-oscuras` incluido: entregar un sistema sin
   su lista de trampas es entregar la mitad.
+- **`operacion` es obligatorio aquí, no deseable.** Quien recibe un sistema tiene que poder
+  levantarlo, saber qué ambientes existen y qué accesos necesita pedir. Un handover que
+  explica la arquitectura pero no la puesta en marcha describe el sistema sin entregarlo: el
+  receptor sabe cómo funciona y sigue sin poder tocarlo el primer día. Es el bloque que más
+  se subestima porque el corpus se ve completo sin él —todo lo estructural tiene evidencia—,
+  y la cobertura reporta verde sobre el hueco que decide si la transferencia sirve.
+- **`pruebas` es obligatorio.** Sin al menos una traza de verificación de extremo a extremo,
+  quien recibe no puede confirmar que lo que levantó funciona, y cualquier cambio que haga
+  después parte de una base que nunca validó.
 - **Procedencia:** exige `codigo` para lo estructural. Lo de `entrevista` se marca como tal
-  para que quien reciba sepa qué está verificado y qué está dicho.
+  para que quien reciba sepa qué está verificado y qué está dicho. `operacion` es
+  legítimamente `entrevista` casi siempre (R4): que un dato venga de una persona no lo
+  degrada, siempre que se sepa de quién y cuándo.
 
 ### Aval de desempeño
 
@@ -120,17 +139,21 @@ Los cuatro estados, que no son grados de lo mismo:
 - **desactualizada** — se emitió bajo un ancla anterior a cambios del corpus. Existe, pero
   refleja un estado pasado (`incremental.md` §6).
 
-## Bloques que esta skill no produce
+## Bloques que esta skill no extrae del código
 
 Declararlos, no suplirlos. Esta tabla es lo que se responde en Q3 cuando el usuario nombra
 una audiencia cuyo bloque no está:
 
 | Bloque faltante | Quién lo produce | Qué NO se hace en su lugar |
 |---|---|---|
-| `operacion` | Skill de captura operativa (entrevista) | Deducir el runbook del código: el código no dice a quién se escala ni qué falla seguido |
+| `operacion` | Esta skill, en entrevista dirigida (SKILL.md §Captura operativa), con quien opera el sistema | Deducir el runbook del código: el código no dice a quién se escala ni qué falla seguido |
+| `pruebas` | `qa-discovery` (mapa de superficie de prueba) y `qa-generator` (suites) | Escribir tests, o declarar cubierto un flujo porque existe un archivo de prueba con su nombre |
 | `riesgo` | `project-audit` | Emitir juicios de calidad desde esta skill; aquí se describe, no se evalúa |
 | `trayectoria` | `git-workflow` | Reconstruir la historia leyendo el estado actual |
 | `superficie` (si no hay onboarding) | `project-onboarding`, o inventario mínimo declarado parcial (R3) | Levantarlo completo por cuenta propia y presentarlo como equivalente |
+
+`operacion` es el único que esta skill puede llenar por sí sola, y solo porque no lo deduce:
+lo pregunta. Los demás requieren un artefacto que produce otra skill.
 
 ## Regla de cierre
 

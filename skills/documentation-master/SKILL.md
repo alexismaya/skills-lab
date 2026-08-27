@@ -42,10 +42,14 @@ El nombre es amplio y compite por activación. Antes de arrancar, descartar esto
 | Panorama del repo: qué hay, cómo se ve, árbol, stack, diagramas | `project-onboarding` |
 | Evaluar calidad o riesgo contra los 4 pilares | `project-audit` |
 | El documento o la presentación ya renderizados | `project-doc` (`.docx`) / `project-deck` (`.pptx`) |
-| Conocimiento operativo que no vive en el código (runbook, fallos frecuentes, escalamiento) | skill de captura operativa |
+| Escribir o ejecutar pruebas del sistema | `qa-discovery` (qué probar) / `qa-generator` (las suites) |
 | Construir, implementar o remediar algo | `sdd-harness-notion` |
 | Partir de un proyecto para crear otro | `derivar-proyecto` |
 | Anotar el código en el código: docstring, comentario, README de un módulo | el agente de código, directamente |
+
+El conocimiento operativo —cómo se levanta, qué ambientes hay, a quién se escala— **sí es de
+esta skill**, pero por una vía distinta: se pregunta, no se extrae (§Captura operativa). La
+frontera no es de tema, es de método.
 
 La frontera práctica con `project-onboarding`: **onboarding responde *qué hay y cómo se
 ve*; esta skill responde *qué hace exactamente y bajo qué condiciones*.** Si la pregunta se
@@ -139,13 +143,20 @@ a operar (ver contrato de interoperabilidad).
 
 **Q3 — Proyecciones previstas.** ¿Para qué audiencias se va a usar este corpus? Determina la
 **cobertura mínima**, no el tono: si se prevé un manual de usuario, el corpus necesita los
-flujos vistos desde la interfaz; si se prevé capacitación, necesita el bloque operativo que
-esta skill **no puede producir sola** y debe declarar como faltante desde el arranque, no al
-final. Ver `references/proyecciones.md`.
+flujos vistos desde la interfaz; si se prevé capacitación o **handover técnico**, necesita el
+bloque `operacion`, que no se extrae del código y exige una entrevista con quien opera el
+sistema (§Captura operativa) — se agenda desde el arranque o se declara faltante desde el
+arranque, nunca se descubre al final. Los bloques que dependen de otra skill (`riesgo`,
+`trayectoria`, `pruebas`) se declaran faltantes aquí con su responsable. Ver
+`references/proyecciones.md`.
 
-**Q4 — Profundidad.** ¿Mapa de superficie, o lógica de negocio decisión a decisión de los
-flujos críticos? La segunda es varios órdenes de magnitud más cara; conviene que el usuario
-elija sabiéndolo, y que se aplique solo a los flujos que lo ameriten.
+**Q4 — Profundidad.** Tres niveles, no dos: **mapa de superficie** (qué puntos de entrada
+existen y quién los atiende), **contrato de invocación** (además, qué recibe cada uno, qué
+devuelve y con qué errores falla) o **lógica decisión a decisión** de los flujos críticos. El
+tercero es varios órdenes de magnitud más caro; conviene que el usuario elija sabiéndolo, y
+que se aplique solo a los flujos que lo ameriten. **El segundo no es opcional si Q3 previó
+handover técnico o capacitación**: quien recibe un sistema necesita poder invocarlo, y una
+firma sin su contrato no alcanza para eso (`references/extraccion.md` §2).
 
 **Q5 — Qué queda explícitamente fuera de alcance.** Lo excluido se declara en el corpus como
 exclusión, no como hueco: un lector futuro debe poder distinguir "no se analizó por decisión"
@@ -213,17 +224,55 @@ fallo más caro de esta skill, porque no deja rastro.
 
 | Bloque | Qué extrae |
 |---|---|
-| Superficie | Rutas, endpoints, comandos, jobs, eventos: firma real y handler que los atiende |
+| Superficie | Rutas, endpoints, comandos, jobs, eventos: firma real y handler que los atiende; a profundidad de contrato (Q4), además qué recibe, qué devuelve y con qué errores falla |
 | Modelo de datos | Entidades, relaciones, migraciones vigentes vs. huérfanas; esquema declarado vs. esquema realmente usado |
 | Lógica de negocio | Secuencia real de decisiones, validaciones, efectos secundarios, estados; y las **reglas implícitas**: retornos tempranos, `catch` mudos, valores por defecto silenciosos |
 | Integraciones | APIs consumidas y expuestas, colas, webhooks, credenciales **referenciadas** — nombres de variable, nunca valores |
 | Zonas oscuras | Código muerto, duplicidad, `NO DETERMINADO`, y contradicciones entre lo documentado y lo implementado |
 | Consolidación | Normalización de todo lo anterior al esquema del corpus |
 
+Estos seis se extraen del código. El corpus tiene además bloques que **no se extraen**:
+`operacion` se pregunta (§Captura operativa), y `riesgo`, `trayectoria` y `pruebas` los
+aportan otras skills. Existen en el vocabulario para poder declararse vacíos — un bloque que
+no existe no se puede reportar como faltante.
+
 Las reglas implícitas son el bloque que justifica la skill: un `catch` vacío es una regla de
 negocio —"este fallo se ignora"— que ningún documento del proyecto declara y que la
 extracción sí puede demostrar. Técnicas, criterios de evidencia y qué buscar en cada bloque:
 `references/extraccion.md`.
+
+## Captura operativa (bloque `operacion`)
+
+Hay una clase de conocimiento que decide si una transferencia sirve y que **no está en el
+código**: cómo se levanta el proyecto desde cero, qué ambientes existen y a qué apunta cada
+uno, qué accesos hay que pedir y a quién, qué se verifica antes de liberar, quién responde
+cuando algo falla. El código no lo dice y nunca lo va a decir.
+
+La reacción natural es declararlo faltante y derivarlo. Es media respuesta: **R4 ya resuelve
+el problema.** Un dato operativo obtenido en entrevista no es una suposición ni un
+`NO DETERMINADO`; es una entrada de procedencia `entrevista` con su respaldo —quién lo
+afirmó y cuándo—, tan legítima como una de `codigo` y distinguible de ella para siempre. Lo
+que está prohibido es **deducir** el runbook leyendo el repo, no **registrarlo** cuando
+alguien lo declara.
+
+De ahí la regla que gobierna este bloque, y que es la única que lo separa de la invención:
+
+> **Se pregunta o se marca. Nunca se infiere.** Un archivo de configuración por ambiente
+> demuestra que el ambiente está previsto, no que exista, ni a qué apunta, ni quién tiene
+> acceso. Eso se pregunta. Si nadie lo sabe, es `NO DETERMINADO` con su motivo —y esa
+> respuesta también es un hallazgo: un sistema cuyo procedimiento de puesta en marcha nadie
+> puede enunciar tiene un solo dueño real, y conviene que quede escrito.
+
+**Cuándo se activa.** Solo si Q3 previó una proyección que exige `operacion` —capacitación,
+documentación de PM o handover técnico—. No se corre "por si acaso": es tiempo de una persona
+que sabe operar el sistema, y se le pide con una agenda concreta.
+
+**Cómo se ejecuta.** Como una etapa más del plan, con su gate: se propone, se agenda, se
+registra por temas y cada respuesta entra al corpus como entrada atómica con su respaldo. No
+se convierte en prosa, no se convierte en un runbook redactado — eso es del renderizador. El
+guion por temas, qué se pregunta en cada uno, qué nunca se anota (ningún valor de credencial,
+ninguna ruta que solo sirva para alcanzar un sistema desde fuera) y cómo se cierra un tema que
+nadie puede responder: `references/operacion.md`.
 
 ## El corpus
 
@@ -309,9 +358,12 @@ conocimiento que esa audiencia necesita no vive en el código. Y se declara **en
 posible desperdicia el análisis entero.
 
 **Cómo se nombra al responsable de un bloque faltante.** Con un dueño concreto: la skill que
-produce ese bloque (`operacion` → skill de captura operativa; `trayectoria` → `git-workflow`;
-`riesgo` → `project-audit`). Si esa skill **no existe o no está disponible** en el entorno, el
-responsable es la persona que tiene el conocimiento, nombrada por su rol. "Falta el bloque
+produce ese bloque (`trayectoria` → `git-workflow`; `riesgo` → `project-audit`; `pruebas` →
+`qa-discovery` / `qa-generator`). `operacion` es la excepción: su dueño no es una skill, es
+**la persona que opera el sistema**, nombrada por su rol, y esta skill le hace la entrevista
+(§Captura operativa). Si una skill responsable **no existe o no está disponible** en el
+entorno, el responsable vuelve a ser la persona que tiene el conocimiento, nombrada por su
+rol. "Falta el bloque
 operativo" sin dueño no es un pendiente: es una queja, y nadie la recoge.
 
 **Por qué no se genera el archivo aunque lo pidan.** No es una negativa de proceso: es que un
@@ -339,8 +391,9 @@ Qué bloques exige cada audiencia y qué pasa cuando falta uno: `references/proy
   Auditoría juzga; esta skill describe. Un hallazgo de auditoría entra al corpus como lo que
   es: una evaluación con su origen declarado, no un hecho del sistema.
 - **`git-workflow`** — aporta el bloque de trayectoria (procedencia `historial`).
-- **Skill de captura operativa** — aporta el runbook y el conocimiento tácito (procedencia
-  `entrevista`). Mientras no exista, ese bloque se declara faltante; no se improvisa.
+- **`qa-discovery` / `qa-generator`** — aportan el bloque `pruebas`: qué superficies están
+  cubiertas y con qué suites. Sin ellas el bloque se declara faltante; esta skill no escribe
+  tests ni da por cubierto un flujo porque exista un archivo de prueba con su nombre.
 - **`project-deck`** y **`project-doc`** — renderizadores; consumidores del corpus.
 - **`sdd-harness-notion`** — si el análisis revela trabajo a construir o remediar, el handoff
   va ahí; esta skill no implementa.
@@ -366,6 +419,11 @@ skill.
 7. **Reescribir páginas ajenas** — la desviación se reporta; la corrección es de su dueño.
 8. **Tomar el camino corto por cuenta propia** — o tomarlo con una proyección prevista
    encima. El atajo se propone y se confirma; si hay destino de entregable, no hay atajo.
+9. **Responder la entrevista operativa desde el repo** — reconstruir la puesta en marcha
+   leyendo el gestor de dependencias y los archivos de configuración. Produce un
+   procedimiento verosímil que nadie ha ejecutado nunca, con procedencia falsificada: parece
+   `entrevista` y es deducción. Es la forma que toma el antipatrón 1 en el bloque `operacion`,
+   y la más difícil de detectar porque el resultado suele ser casi correcto.
 
 ## Lo que esta skill NO hace
 
@@ -392,6 +450,10 @@ adelantado gasta el contexto que hace falta para leer el código, que es donde e
   ownership, operación de las Ps y de los gates. Leer antes de crear o editar cualquier página.
 - `references/incremental.md` — anclaje, caducidad de evidencias, cálculo de la re-ejecución
   selectiva y efecto sobre las proyecciones. Leer cuando Q6 sea "re-ejecución".
+- `references/operacion.md` — guion de la entrevista operativa: temas, qué se pregunta en
+  cada uno, cómo se registra cada respuesta como entrada de corpus, qué no se anota nunca, y
+  cómo se cierra un tema sin respuesta. Leer cuando Q3 previó una proyección que exige
+  `operacion`.
 - `references/proyecciones.md` — qué bloques exige cada audiencia, con qué detalle, qué omite
   y qué ocurre si un bloque falta. Leer en Q3 y al emitir la cobertura de cierre.
 - `references/interop-notion.md` — contrato de interoperabilidad de la suite (inyectado al

@@ -52,12 +52,21 @@ Los cuatro últimos no son adorno: `etapa` es lo que hace calculable la re-ejecu
 ## 2. Vocabularios cerrados
 
 **`bloque`** — `superficie` · `modelo-datos` · `logica-negocio` · `integraciones` ·
-`zonas-oscuras` · `riesgo` (aportado por `project-audit`) · `trayectoria` (aportado por
-`git-workflow`) · `operacion` (aportado por la skill de captura operativa).
+`zonas-oscuras` · `operacion` (capturado en entrevista dirigida, no extraído del código) ·
+`pruebas` (aportado por `qa-discovery` / `qa-generator`) · `riesgo` (aportado por
+`project-audit`) · `trayectoria` (aportado por `git-workflow`).
 
-Los tres últimos existen aunque esta skill no los produzca: el corpus tiene que poder
-declararlos **vacíos** para que la cobertura por proyección sea honesta. Un bloque que no
-existe en el vocabulario no se puede reportar como faltante.
+Los tres aportados por otras skills existen en el vocabulario aunque esta skill no los
+produzca: el corpus tiene que poder declararlos **vacíos** para que la cobertura por
+proyección sea honesta. Un bloque que no existe en el vocabulario no se puede reportar como
+faltante.
+
+`operacion` es el caso aparte, y conviene no confundirlo con los otros tres: **esta skill sí
+lo llena, pero preguntando, nunca leyendo el código.** Sus entradas son de procedencia
+`entrevista` con su respaldo (quién y cuándo); no llevan `ancla` porque no hay línea que
+citar, y no caducan cuando el código cambia (`incremental.md`). Las de `pruebas`, en cambio,
+son de procedencia `codigo` como cualquier otra: un archivo de prueba es evidencia
+`archivo:línea` de pleno derecho.
 
 **`procedencia`** — `codigo` · `entrevista` · `auditoria` · `historial`.
 
