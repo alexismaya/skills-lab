@@ -1,5 +1,66 @@
 # Changelog
 
+## 2026-08-26 (2)
+
+**`documentation-master` v1.1 y `project-doc` v1.1 — el bloque operativo deja de estar
+huerfano, y aparece el bloque `pruebas`.** Origen: retroalimentacion sobre un handover tecnico
+ya entregado. El documento cubria arquitectura, superficie, modelo de datos, integraciones,
+configuracion y deuda declarada — y aun asi quien lo recibia no podia levantar el sistema el
+primer dia. Nueve huecos reportados, tres causas.
+
+- **La cobertura reportaba verde sobre un hueco real.** `operacion` estaba marcado *deseable*
+  para handover tecnico en las tres superficies que lo declaran. Cinco de los nueve huecos
+  eran ese bloque: puesta en marcha, ambientes, accesos, responsables, criterios de
+  liberacion. Con el en *deseable*, la proyeccion nunca se declaraba `bloqueada` y el
+  documento salia pareciendo terminado. Ahora es **obligatorio** en handover tecnico
+  (`proyecciones.md`, `proyecciones-doc.md`, tabla de audiencias de `project-doc/SKILL.md`).
+  Es el hallazgo caro: la maquinaria existe para ser honesta sobre lo que falta, y el
+  contrato le estaba diciendo que no faltaba nada.
+- **El hueco no era declarable.** El indice base de handover no tenia seccion de puesta en
+  marcha, ambientes, accesos ni criterios de liberacion, y una seccion que no esta en el
+  indice no se puede marcar `[PENDIENTE]`. Añadida la **guia de incorporacion** (§9–§17 de
+  `doc-templates.md`): puesta en marcha, ambientes, accesos, verificacion de extremo a extremo,
+  ejemplos de invocacion, estado y alcance vigente, backlog priorizado, criterios de liberacion
+  y responsables, checklist de recepcion. §15 corrige ademas su fuente: el backlog priorizado
+  sale de `zonas-oscuras` + `riesgo`, no solo de las P-n. §17 no puede bloquearse —es
+  derivada— pero **hereda los bloqueos**: una casilla que depende de una seccion bloqueada se
+  emite marcada, nunca se omite.
+- **`operacion` tenia un dueño fantasma.** Se derivaba a una "skill de captura operativa" que
+  no existe, con `operacion` obligatorio en tres de seis proyecciones — media suite bloqueada
+  contra algo que nunca se construyo. Pero R4 ya resolvia el problema: un dato operativo
+  obtenido en entrevista es procedencia `entrevista` con su respaldo, no una suposicion. Lo
+  prohibido es **deducir** el runbook del repo, no **registrarlo** cuando alguien lo declara.
+  Nuevo §Captura operativa en el SKILL.md y `references/operacion.md`: ocho temas, a quien se
+  entrevista en cada uno, como entra cada respuesta al corpus, y que no se anota nunca
+  (ningun valor de credencial, ninguna ruta de acceso, ningun dato personal de contacto —
+  rol y canal).
+- **Bloque `pruebas`, nuevo en el vocabulario cerrado** (`corpus.md` §2), aportado por
+  `qa-discovery` / `qa-generator`. La suite produce el mapa de superficie de prueba y las
+  suites, y el corpus no tenia donde recibirlo: todo handover nacia sin manera de verificarse.
+  Obligatorio en handover tecnico, deseable en capacitacion, PM y aval. Procedencia `codigo`:
+  un archivo de prueba es evidencia `archivo:linea` de pleno derecho, y `extraccion.md` §1 ya
+  decia que un test prueba lo que el test ejercita — ahora dice a que bloque pertenece esa
+  afirmacion.
+- **Tercer nivel de profundidad en Q4: contrato de invocacion.** El bloque `superficie` se
+  detenia en firma + handler + guarda, y con eso no se puede invocar nada. A profundidad de
+  contrato se registra ademas que recibe cada punto de entrada (citando el validador que
+  corre, no la documentacion del repo), que devuelve, y con que errores falla — la mitad que
+  se omite siempre y la unica que se consulta cuando algo no funciona. Obligatorio si Q3
+  previo handover o capacitacion. Un campo cuyo valor valido no se pueda demostrar se marca
+  `NO DETERMINADO` dentro del ejemplo: rellenarlo con algo plausible hace que quien lo copie
+  depure el sistema en vez del ejemplo.
+- **Caducidad de lo operativo** (`incremental.md` §5). Quien otorga un acceso o autoriza una
+  liberacion no cuelga de ninguna entidad de codigo, asi que ninguna entrada `obsoleto` lo
+  marcaria nunca — y es lo que mas rapido deja de ser cierto, porque cambia cuando cambia la
+  gente. Esas entradas se revisan **por fecha de captura**. Es la unica caducidad del corpus
+  que no se calcula desde el codigo, y existe porque el error no se nota: un contacto obsoleto
+  se lee igual de bien que uno vigente.
+- **Antipatron 9 en `documentation-master`:** responder la entrevista operativa desde el repo.
+  Produce un procedimiento verosimil que nadie ha ejecutado nunca, con procedencia
+  falsificada: parece `entrevista` y es deduccion.
+- Los triggers (`description`) de ambas skills **no se tocaron**: cambia que exige cada
+  proyeccion y de donde sale cada bloque, no cuando se activan.
+
 ## 2026-08-26
 - **Coherencia de la suite antes de publicar las dos skills nuevas.** Nada de esto cambia
   comportamiento de extraccion ni de renderizado: cierra los huecos que dejaban a
