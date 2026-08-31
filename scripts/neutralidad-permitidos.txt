@@ -68,6 +68,7 @@ token:CVE
 token:CalculadoraTarifa
 token:CalculadoraTarifaTest
 token:CamelCase
+token:ChildItem
 token:CmdletBinding
 token:ConfirmacionPage
 token:ConfirmarReservaJob
@@ -98,6 +99,7 @@ token:FORMAS
 token:FUENTE
 token:FormateadorTarifas
 token:FormularioSolicitud
+token:FullName
 token:GATEAN
 token:GLOBALES
 token:GitHub

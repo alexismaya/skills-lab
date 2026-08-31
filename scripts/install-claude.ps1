@@ -1,16 +1,23 @@
 <#
 .SYNOPSIS
-  Instala las skills de Claude en Claude Code copiando cada carpeta e
-  inyectando shared/interop-notion.md en su references/ (igual que package.sh,
-  pero sin empaquetar en .skill: Claude Code lee las carpetas directamente).
+  Instala la suite en Claude Code copiando cada carpeta e inyectando
+  shared/interop-notion.md en su references/ (igual que package.sh, pero sin
+  empaquetar en .skill: Claude Code lee las carpetas directamente).
 
 .DESCRIPTION
   Claude Code descubre skills como carpetas con SKILL.md en:
     - personal: ~/.claude/skills/<nombre>/
     - por proyecto: <raiz-del-proyecto>/.claude/skills/<nombre>/
-  Este script instala solo las skills pensadas para Claude (las de Kiro
-  -qa-discovery, qa-generator- se omiten). La copia dentro de cada skill de
-  interop-notion.md es un artefacto: la fuente unica es shared/interop-notion.md.
+
+  La lista se deriva de skills/: toda carpeta con SKILL.md se instala. No hay
+  lista fija que mantener, y es deliberado -una lista fija se desincroniza en
+  silencio por dos lados: una skill nueva no llega a ningun runtime, y una skill
+  ya instalada que quede fuera de la lista conserva el contrato viejo mientras
+  las demas avanzan-. Todas las skills son portables entre runtimes; ver la
+  tabla de equivalencias en shared/interop-notion.md.
+
+  La copia dentro de cada skill de interop-notion.md es un artefacto: la fuente
+  unica es shared/interop-notion.md.
 
 .PARAMETER Dest
   Carpeta de skills destino. Por defecto la personal (~/.claude/skills).
@@ -30,19 +37,6 @@ $ErrorActionPreference = "Stop"
 $root   = Split-Path -Parent $PSScriptRoot
 $shared = Join-Path $root "shared\interop-notion.md"
 
-# Skills para Claude (las de Kiro corren en su propio runtime y se omiten).
-$claudeSkills = @(
-  "derivar-proyecto",
-  "sdd-harness-notion",
-  "adversarial-review",
-  "project-onboarding",
-  "documentation-master",
-  "project-deck",
-  "project-doc",
-  "project-audit",
-  "git-workflow"
-)
-
 if (-not (Test-Path $shared)) {
   throw "No se encontro el contrato compartido: $shared"
 }
@@ -50,8 +44,10 @@ if (-not (Test-Path $shared)) {
 New-Item -ItemType Directory -Force -Path $Dest | Out-Null
 Write-Host "Destino: $Dest`n"
 
-foreach ($s in $claudeSkills) {
-  $from = Join-Path $root "skills\$s"
+$n = 0
+foreach ($dir in Get-ChildItem -Path (Join-Path $root "skills") -Directory) {
+  $s    = $dir.Name
+  $from = $dir.FullName
   if (-not (Test-Path (Join-Path $from "SKILL.md"))) {
     Write-Host "omitir: $s (sin SKILL.md)"
     continue
@@ -62,6 +58,7 @@ foreach ($s in $claudeSkills) {
   New-Item -ItemType Directory -Force -Path (Join-Path $to "references") | Out-Null
   Copy-Item $shared (Join-Path $to "references\interop-notion.md") -Force
   Write-Host "ok:     $s"
+  $n++
 }
 
-Write-Host "`nListo. En Claude Code corre /skills para verificar la lista."
+Write-Host "`n$n skills instaladas. En Claude Code corre /skills para verificar la lista."

@@ -1,14 +1,26 @@
 #!/usr/bin/env bash
-# Instala las skills de Claude en Claude Code copiando cada carpeta e
-# inyectando shared/interop-notion.md en su references/ (igual que package.sh,
-# pero sin empaquetar en .skill: Claude Code lee las carpetas directamente).
+# Instala la suite en Claude Code copiando cada carpeta e inyectando
+# shared/interop-notion.md en su references/ (igual que package.sh, pero sin
+# empaquetar en .skill: Claude Code lee las carpetas directamente).
 #
 # Claude Code descubre skills como carpetas con SKILL.md en:
 #   - personal:     ~/.claude/skills/<nombre>/
 #   - por proyecto: <raiz-del-proyecto>/.claude/skills/<nombre>/
-# Solo instala las skills para Claude; las de Kiro (qa-discovery, qa-generator)
-# corren en su propio runtime y se omiten. La copia de interop-notion.md dentro
-# de cada skill es un artefacto: la fuente unica es shared/interop-notion.md.
+#
+# La lista se deriva de skills/: toda carpeta con SKILL.md se instala. No hay
+# lista fija que mantener, y es deliberado — una lista fija se desincroniza en
+# silencio por dos lados: una skill nueva no llega a ningun runtime, y una skill
+# ya instalada que quede fuera de la lista conserva el contrato viejo mientras
+# las demas avanzan, dejando dos versiones del contrato conviviendo en el mismo
+# runtime. Las dos fallas ocurrieron.
+#
+# Todas las skills son portables entre runtimes (ver la tabla de equivalencias
+# en shared/interop-notion.md), asi que se instalan todas. La columna
+# "Integracion prevista" de CLAUDE.md documenta para que runtime se diseno cada
+# una, no cual puede ejecutarla.
+#
+# La copia de interop-notion.md dentro de cada skill es un artefacto: la fuente
+# unica es shared/interop-notion.md.
 #
 # Uso:
 #   ./scripts/install-claude.sh                 # instala en ~/.claude/skills
@@ -19,27 +31,16 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SHARED="$ROOT/shared/interop-notion.md"
 DEST="${1:-$HOME/.claude/skills}"
 
-# Skills para Claude (las de Kiro corren en su propio runtime y se omiten).
-CLAUDE_SKILLS=(
-  derivar-proyecto
-  sdd-harness-notion
-  adversarial-review
-  project-onboarding
-  documentation-master
-  project-deck
-  project-doc
-  project-audit
-  git-workflow
-)
-
 [ -f "$SHARED" ] || { echo "No se encontro el contrato compartido: $SHARED" >&2; exit 1; }
 
 mkdir -p "$DEST"
 echo "Destino: $DEST"
 echo
 
-for s in "${CLAUDE_SKILLS[@]}"; do
-  from="$ROOT/skills/$s"
+n=0
+for from in "$ROOT"/skills/*; do
+  [ -d "$from" ] || continue
+  s="$(basename "$from")"
   if [ ! -f "$from/SKILL.md" ]; then
     echo "omitir: $s (sin SKILL.md)"
     continue
@@ -50,7 +51,8 @@ for s in "${CLAUDE_SKILLS[@]}"; do
   mkdir -p "$to/references"
   cp "$SHARED" "$to/references/interop-notion.md"
   echo "ok:     $s"
+  n=$((n + 1))
 done
 
 echo
-echo "Listo. En Claude Code corre /skills para verificar la lista."
+echo "$n skills instaladas. En Claude Code corre /skills para verificar la lista."
