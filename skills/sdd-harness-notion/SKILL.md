@@ -15,7 +15,7 @@ Esta skill no trae proyectos de ejemplo embebidos, a propósito: cada proyecto d
 
 1. Toda duda, ambigüedad o decisión sin resolver se registra como **pregunta abierta numerada (P-1, P-2, ...)** en la página de Notion del proyecto, y el trabajo que depende de ella **no avanza** hasta resolverla.
 2. Una P se resuelve solo de dos formas: (a) el usuario la responde, o (b) el modelo encuentra la respuesta en el contexto disponible (código, DDL, spec, documentos) — y **aun así la presenta al usuario para confirmación antes de darla por cerrada**. La evidencia encontrada se anota junto a la P.
-3. Antes de crear páginas, escribir prompts o ejecutar cualquier cosa: presentar al usuario la **propuesta de fases/etapas/tareas** y esperar su aprobación explícita. La propuesta es conversación; la ejecución empieza después del "adelante".
+3. Antes de crear páginas, escribir prompts o ejecutar cualquier cosa: presentar al usuario la **propuesta de fases/etapas/tareas** y esperar su aprobación explícita. La propuesta es conversación; la ejecución empieza después del "adelante". Y antes de ese "adelante", la propuesta pasa por **revisión adversarial** (`adversarial-review`, punto A2): la aprobación del usuario y el contra-reporte son dos filtros distintos — el usuario juzga si es lo que quería, el contra-reporte si se sostiene.
 
 ## Arranque en un proyecto (entrevista obligatoria la primera vez)
 
@@ -68,14 +68,21 @@ Ninguna fase inicia sin que el gate de la anterior esté aprobado por el usuario
 
 ```
 Fase de ANÁLISIS/diagnóstico (solo lectura, cero código)
-    → gate: revisión del reporte
+    → contra-reporte A1 (obligatorio)
+    → gate: revisión del reporte, con el contra-reporte delante
+Propuesta de fases/etapas
+    → contra-reporte A2 (obligatorio, ANTES de crear páginas)
 Fase de SCAFFOLD/preparación + línea base (seguridad, guardas)
-    → gate: reporte de cierre con evidencias
+    → contra-reporte A3 (ofrecido) → gate: reporte de cierre con evidencias
 Fases de IMPLEMENTACIÓN por dominios
-    → gate: reporte de cierre con evidencias
+    → contra-reporte A3 (ofrecido) → gate: reporte de cierre con evidencias
 Fase de VERIFICACIÓN (UAT/QA contra entorno real)
     → gate: cierre → entrega
 ```
+
+Los contra-reportes los produce `adversarial-review` en un chat aparte, con el artefacto y las
+fuentes primarias — nunca con la conversación en la que el artefacto se escribió. Su omisión en
+A3 es legítima; su omisión **silenciosa**, en cualquier punto, no.
 
 Reglas transversales:
 
@@ -131,7 +138,7 @@ Una sección entera sin una sola marca `[declarado]` es una señal de alarma: si
 **Reglas de la variante:**
 
 - **Una decisión sin alternativas rechazadas no es una decisión, es una preferencia.** Toda ficha de la sección 4 lista al menos dos opciones consideradas y por qué se descartaron.
-- **El análisis propone; el gate decide.** Ninguna decisión de la sección 4 es vinculante hasta que el usuario la ratifica. Es la única fase donde el entregable es propositivo, y por eso el gate importa más que en ninguna otra.
+- **El análisis propone; el gate decide.** Ninguna decisión de la sección 4 es vinculante hasta que el usuario la ratifica. Es la única fase donde el entregable es propositivo, y por eso el gate importa más que en ninguna otra — y por eso el gate decide **con el contra-reporte delante** (`adversarial-review`, punto A1): el modo de fallo de esta variante es una arquitectura verosímil ratificada por sonar razonable, y ninguna disciplina autoaplicada por quien la escribió lo detecta.
 - **Toda decisión de infraestructura se argumenta contra el número de la sección 2** (regla de anclaje, Q6). Sin ancla, se registra como P — no se resuelve por criterio del ejecutor.
 - **Cero código, cero scaffold, cero migraciones.** Sigue siendo fase de análisis.
 
@@ -187,7 +194,7 @@ Reglas:
 - **Grafo de dependencias explícito** — qué es paralelizable y qué no.
 - **Precisión en las fronteras:** si la etapa A crea algo que la B materializa, A declara EXACTAMENTE a qué apunta hoy y qué queda para B. La ambigüedad en la frontera es donde el ejecutor decide por criterio propio.
 - **Instrucción de arranque en el hub:** el texto literal para pegar en el chat nuevo.
-- La propuesta de etapas SIEMPRE se presenta al usuario para análisis antes de crear las páginas (Regla cero).
+- La propuesta de etapas SIEMPRE se presenta al usuario para análisis antes de crear las páginas (Regla cero), y SIEMPRE pasa por **contra-reporte A2** antes de materializarse (`adversarial-review`). Es el punto más barato del ciclo: aquí un antipatrón se corrige editando un mensaje; después son subpáginas creadas, ejecutadas y con handoffs colgando de ellas.
 
 ### Escalamiento por perfil
 
@@ -221,6 +228,7 @@ Regla operativa: una etapa solo se marca `bajo coste` si todas sus tareas se pue
 
 Al revisar un reporte de cierre:
 
+0. **El contra-reporte primero.** Si el artefacto pasó por revisión adversarial (`adversarial-review`), su contra-reporte se lee **antes** que el reporte de cierre. El orden importa: leer primero la narrativa del ejecutor calibra al revisor hacia ella, y las objeciones se leen después como matices de algo ya aceptado. Cada objeción sostenida se resuelve de una de tres formas —se corrige, se abre como P-n con su gate, o se anota como riesgo asumido con su motivo—, y **ninguna de las tres es el silencio**. Si no hubo contra-reporte, anotarlo en el gate con el motivo: uno ausente y no declarado se lee como uno aprobatorio.
 1. Cada criterio contra su **evidencia adjunta** (no contra el ✅ del ejecutor). Sin evidencia = no cumplido, aunque probablemente sea cierto.
 2. Estado de las **Ps**: resueltas con la decisión documentada y CÓMO se resolvió; abiertas con impacto y a qué fase se difieren.
 3. **Desviaciones silenciosas:** dependencias, estructura, decisiones tomadas donde se pedía detenerse. Aceptables solo si están reportadas y justificadas.
@@ -248,3 +256,4 @@ Si las páginas las genera otro agente con su propia integración, pueden nacer 
 
 - `references/plantillas.md` — plantillas literales: prompt de análisis (§ 1 sobre base existente, § 1b desde cero), prompt de implementación, hub de fase, subpágina de etapa, reporte de cierre, hallazgo (H-x), y formato de la página de Lecciones. Leer al redactar cualquiera de estos artefactos. Las plantillas son punto de partida — la estructura existente del Notion del usuario (Q2) y sus Lecciones tienen prioridad sobre ellas.
 - `references/interop-notion.md` — contrato de interoperabilidad con las demás skills de la suite (`derivar-proyecto`, `qa-discovery`, `qa-generator` u otras) cuando operan sobre el mismo proyecto: estructura canónica del hub, tabla única de Ps con numeración compartida, ownership de páginas, handoffs como interfaz, gates cruzados con QA. Leer SIEMPRE que el proyecto involucre (o vaya a involucrar) más de una skill de la suite.
+- `adversarial-review` (skill hermana, no un archivo de esta) — la revisión adversarial de los artefactos de plan: contra-reporte de la Fase de Análisis (A1) y de la propuesta de fases/etapas (A2), **ambos obligatorios**; de un reporte de cierre (A3) y de los handoffs (A4), ofrecidos. Invocarla en los puntos marcados arriba; su omisión se declara por escrito en el gate.

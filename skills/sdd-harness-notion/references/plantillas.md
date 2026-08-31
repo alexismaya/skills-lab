@@ -344,6 +344,12 @@ Ruta secuencial recomendada: E1 → ... E{a} y E{b} paralelizables tras E{c}.
 ## Fuera de alcance (Fase {N})
 - {lista}
 
+## Revisión adversarial
+| Punto | Artefacto | Contra-reporte | Veredicto | Ps derivadas |
+|---|---|---|---|---|
+| A2 | Propuesta de esta fase | {enlace} | {veredicto} | {P-x} |
+| A3 | Reporte de cierre | {enlace \| omitido porque ...} | {veredicto} | {P-y} |
+
 ## Entregable
 {entregable + qué revisa el humano}
 ```
@@ -474,6 +480,7 @@ Sin este estado explícito la siguiente etapa vuelve a inferir. 5-15 líneas.}
 
 **Fecha:** {fecha}
 **Estado:** {✅ Completo / ⚠️ Completo con desviaciones}
+**Veredicto adversarial:** {enlace al contra-reporte A3 + su veredicto | **omitido** porque {motivo}}
 
 ## 1. Mapa de lo construido
 {endpoint ↔ operación / tarea ↔ resultado, en tabla}
