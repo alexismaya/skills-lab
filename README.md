@@ -20,6 +20,7 @@ código de aplicación ni suite de pruebas.
 | [`derivar-proyecto`](skills/derivar-proyecto/) | **Descubrimiento** — proyecto nuevo a partir de uno existente: matriz de herencia, guardas anti-arrastre, barrido de identidad |
 | [`project-audit`](skills/project-audit/) | **Diagnóstico** — auditoría contra 4 pilares (seguridad, escalabilidad, rendimiento, mantenibilidad) con evidencia `file:line` y severidad justificada |
 | [`sdd-harness-notion`](skills/sdd-harness-notion/) | **Construcción** — fases con gates, etapas atomizadas en Notion, evidencia por criterio, calibración por capacidad del ejecutor |
+| [`adversarial-review`](skills/adversarial-review/) | **Refutación** — contra-reporte independiente de un artefacto de plan antes de ejecutarlo: objeciones citadas, premortem acotado y veredicto; refuta y reporta, nunca corrige ni propone |
 | [`qa-discovery`](skills/qa-discovery/) | **Calidad (plan)** — detecta el stack, mapea superficies de prueba y las prioriza por riesgo de negocio |
 | [`qa-generator`](skills/qa-generator/) | **Calidad (ejecución)** — materializa suites por modo: unitario, integración, e2e, infraestructura |
 | [`project-onboarding`](skills/project-onboarding/) | **Documentación** — snapshot del proyecto en Notion con diagramas Mermaid; lo que no tiene fuente se marca pendiente, nunca se inventa |
@@ -28,7 +29,7 @@ código de aplicación ni suite de pruebas.
 | [`project-doc`](skills/project-doc/) | **Documento** — proyecta el corpus de `documentation-master` a un `.docx` adaptado a la audiencia (manual de usuario, capacitación, PM, handover técnico, cliente, aval de desempeño) |
 | [`git-workflow`](skills/git-workflow/) | **Transversal** — gobierna el uso de Git por el agente en cualquier repo: propone y explica, nunca decide solo |
 
-Las diez comparten **tabla única de preguntas abiertas** por proyecto, página de
+Las once comparten **tabla única de preguntas abiertas** por proyecto, página de
 Lecciones, **handoffs como interfaz** entre skills, y gates cruzados — definido
 todo en [`shared/interop-notion.md`](shared/interop-notion.md).
 

@@ -34,6 +34,7 @@ $shared = Join-Path $root "shared\interop-notion.md"
 $claudeSkills = @(
   "derivar-proyecto",
   "sdd-harness-notion",
+  "adversarial-review",
   "project-onboarding",
   "documentation-master",
   "project-deck",

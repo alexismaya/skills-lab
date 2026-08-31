@@ -23,6 +23,7 @@ DEST="${1:-$HOME/.claude/skills}"
 CLAUDE_SKILLS=(
   derivar-proyecto
   sdd-harness-notion
+  adversarial-review
   project-onboarding
   documentation-master
   project-deck

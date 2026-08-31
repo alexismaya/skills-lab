@@ -1,5 +1,70 @@
 # Changelog
 
+## 2026-08-31
+
+**Skill nueva: `adversarial-review` v1.0, y enmienda del contrato compartido (regla 9) — la
+suite sabia contenerse y no sabia refutarse.** Origen: evaluacion del conjunto buscando donde
+encajaria una fase de revision adversarial en los planes. El diagnostico resulto mas incomodo que
+la respuesta: hay evidencia `archivo:linea`, procedencia, `NO DETERMINADO`, marcas
+`[declarado]`/`[inferido]`, alternativas rechazadas obligatorias y criterios discriminantes —
+todo aparato de **contencion**, cero **refutacion**. Nada intentaba tumbar lo ya afirmado, y
+ninguna skill revisaba el trabajo de otra.
+
+- **La asimetria que lo delata.** El reporte de cierre tiene plantilla (`plantillas.md` §5) y
+  checklist de revision de cinco puntos (`sdd-harness-notion/SKILL.md` §Revision de gate). La
+  **propuesta de plan no tenia ninguna de las dos**: se revisaba lo ejecutado con mas rigor que
+  lo planeado. Y los once antipatrones se titulan "al crear o **auditar** un plan" sin que
+  existiera procedimiento, rol ni plantilla para esa auditoria — no habia una §Revision de plan
+  analoga a la §Revision de gate.
+- **El modo de fallo ya estaba nombrado y sin defensa.** La variante desde cero lo dice literal:
+  *"el riesgo no es leer mal el codigo, es inventar una arquitectura verosimil y que el usuario
+  la ratifique porque suena razonable"*. Toda la defensa contra eso era estructural y
+  autoaplicada por el mismo modelo que propone. Los antipatrones 10 y 11 —los dos mas caros—
+  nacieron por retrospectiva de fallos reales; esta skill es el intento de adelantar ese
+  aprendizaje al momento en que revertir todavia es barato.
+- **La independencia es una regla de insumos, no una actitud.** El contra-agente recibe el
+  artefacto y las fuentes primarias, **nunca la conversacion en la que el artefacto se produjo**.
+  Leer la justificacion del autor antes de atacarla hereda el sesgo que la revision existe para
+  romper. Si el paquete llega contaminado, se revisa igual y el contra-reporte se marca
+  `contaminado`: es informacion honesta sobre cuanto vale ese veredicto.
+- **Refuta, no corrige, no propone, no edita.** Mismo reparto de roles que `project-audit` ya
+  ejercia ("audita, no remedia") y que el ownership del contrato exige. Una objecion sostenida es
+  un reporte de desviacion; la correccion es del dueño del artefacto. Entregar la solucion, ademas
+  de invadir ese rol, introduce una alternativa que nadie sometio al mismo escrutinio y que el
+  usuario adoptara por ser la ultima que leyo.
+- **Cuatro puntos de intervencion, dos obligatorios.** A1 (reporte de analisis) y A2 (propuesta de
+  fases/etapas, antes de crear paginas) son obligatorios porque ahi un error se corrige editando
+  un reporte o un mensaje; los mismos errores tres fases despues cuestan una arquitectura o
+  veinte subpaginas ya ejecutadas. A3 (cierre de fase) se ofrece y A4 (handoffs) va a demanda de
+  quien los consume — y **A4 no gasta un chat por etapa**: corre en lote dentro de A3.
+- **Ninguna escala nueva.** Las ocho clases de refutacion salen de modos de fallo que la suite ya
+  nombraba, y el peso de una objecion no se mide con una severidad inventada sino con **`gatea`**,
+  que es como la suite ya mide el bloqueo. Una refutacion aceptada entra a la tabla unica como
+  P-n con `origen: adversarial-review`: es la unica forma en que el revisor toca un artefacto
+  compartido, y se hace con edicion quirurgica.
+- **Regla 9 y ampliacion de la regla 5 en `shared/interop-notion.md`**, mas la pagina
+  **Revision adversarial** en la estructura canonica. La regla 5 gana la clausula que importa:
+  omitir un contra-reporte es legitimo, **omitirlo en silencio no** — uno ausente y no declarado
+  se lee como uno aprobatorio, que es justo el efecto que la regla evita.
+- **Ganchos en `sdd-harness-notion`** (Regla cero §3, ciclo de fases, variante B, §Modularizacion,
+  §Revision de gate, §Recursos) y en `plantillas.md` (tabla de revision adversarial en el hub de
+  fase, campo `Veredicto adversarial` en el reporte de cierre). El punto 0 del gate ordena leer el
+  contra-reporte **antes** que el reporte de cierre: leer primero la narrativa del ejecutor
+  calibra al revisor hacia ella, y despues las objeciones se leen como matices de algo ya
+  aceptado.
+- **Antipatrones del revisor, seccion de primera clase.** Sin ellos la skill produce ruido y se
+  desactiva sola a la tercera vez. Los dos que mas cuestan: **refutacion por catalogo** (rellenar
+  una ficha por cada una de las ocho clases) y **aprobacion complaciente** (cerrar con "sin
+  objeciones" sin declarar que se ataco). Contra el segundo, el contra-reporte lleva una seccion
+  obligatoria — *que intente tumbar y no pude* — calcada del Prompt C de neutralidad: sin ella,
+  una revision que no ocurrio es indistinguible de una que si.
+- **Instaladores.** `install-claude.sh` y `install-claude.ps1` llevan lista fija de skills; la
+  nueva se dio de alta en ambas. Sin eso la skill existe en el repo y no se instala. `README.md`
+  y `CLAUDE.md` suman la fila correspondiente, y `UNIVERSOS-SINTETICOS.md` registra el uso del
+  universo 1 en `tacticas.md`.
+- **Los triggers (`description`) de las diez skills existentes no se tocaron.** Cambia en que
+  momento del ciclo entra una revision nueva, no cuando se activa ninguna de las anteriores.
+
 ## 2026-08-26 (2)
 
 **`documentation-master` v1.1 y `project-doc` v1.1 — el bloque operativo deja de estar
