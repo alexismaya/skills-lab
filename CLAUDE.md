@@ -16,13 +16,14 @@ A suite of agent skills (Markdown, written in Spanish) for building software pro
 
 ```bash
 ./scripts/package.sh                     # packages each skills/<name>/ (that has a SKILL.md) into dist/<name>.skill
-./scripts/install-claude.sh [dest]       # installs the skills into ~/.claude/skills (or the given dir); .ps1 variant for PowerShell
+./scripts/install-claude.sh [dest]       # installs the whole suite into ~/.claude/skills (or the given dir); .ps1 variant for PowerShell
+./scripts/install-kiro.sh [dest]         # same, into ~/.kiro/skills; .ps1 variant for PowerShell
 ./scripts/install-hooks.sh               # enables the neutrality hooks (once per clone)
 ./scripts/check-neutralidad.sh --all     # full neutrality audit of the tree
 ./scripts/seed-permitidos.sh             # regenerates the allowlist from the tree (only if the tree is verified clean)
 ```
 
-The script is bash (run via Git Bash on Windows). For each skill it copies `shared/interop-notion.md` into the skill's `references/` and zips the folder into `dist/`. `dist/` is generated output and not versioned.
+The scripts are bash (run via Git Bash on Windows). For each skill they copy `shared/interop-notion.md` into the skill's `references/`; `package.sh` also zips the folder into `dist/`. `dist/` is generated output and not versioned. **The installers derive their skill list from `skills/` — every folder with a `SKILL.md` is installed into both runtimes.** Do not reintroduce a hardcoded list: it desynchronises silently in two directions, leaving a new skill installed nowhere and an already-installed one carrying a stale contract while the rest move on.
 
 ## Architecture
 

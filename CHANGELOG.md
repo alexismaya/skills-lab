@@ -1,5 +1,35 @@
 # Changelog
 
+## 2026-08-31 (2)
+
+**Instaladores: la lista fija se sustituye por el arbol, y aparece `install-kiro.sh`.** Origen:
+actualizar las skills en los dos runtimes despues de agregar `adversarial-review`. Las dos cosas
+que salieron mal no eran del cambio de ese dia: eran de como se instalaba desde siempre.
+
+- **La lista fija fallaba en dos direcciones, las dos en silencio.** Hacia adelante, una skill
+  nueva no llegaba a ningun runtime hasta que alguien se acordara de anadirla a mano al `.sh` y
+  al `.ps1` — `adversarial-review` existia en el repo y no se instalaba en ningun sitio. Hacia
+  atras, una skill ya instalada que quedara fuera de la lista conservaba el contrato viejo
+  mientras las demas avanzaban: `qa-discovery` estaba instalada en Claude sin estar en la lista,
+  asi que se habria quedado en la regla 8 mientras las otras nueve pasaban a la 9. **Dos
+  versiones del contrato conviviendo en el mismo runtime** es exactamente la deriva que el
+  contrato existe para evitar. Ahora la lista se deriva de `skills/`: toda carpeta con
+  `SKILL.md` se instala.
+- **`install-kiro.sh` y `install-kiro.ps1`, nuevos.** Su ausencia tenia un costo medible y
+  acumulado: mientras las copias de Claude se refrescaban con su instalador, las de Kiro llevaban
+  meses paradas. Seis skills seguian en el commit inicial, `documentation-master` era anterior a
+  la captura operativa — le faltaba `operacion.md` entero y arrastraba el texto de la skill de
+  captura que no existe, el dueno fantasma que ya se habia corregido — y las diez tenian el
+  contrato desactualizado. Una instalacion que se hace a mano se deja de hacer.
+- **Los dos runtimes reciben la suite completa.** La exclusion de `qa-discovery` y `qa-generator`
+  del instalador de Claude contradecia lo que el README y el contrato ya declaraban: las skills
+  son portables entre runtimes, y para eso existe la tabla de equivalencias. La columna
+  *Integracion prevista* documenta para que runtime se diseno cada skill, no cual puede
+  ejecutarla; se queda como estaba, ahora sin que un script la lea como una restriccion.
+- **CLAUDE.md deja escrita la regla**, no solo el arreglo: no reintroducir una lista fija. El
+  arreglo sin la regla dura hasta la proxima vez que a alguien le parezca mas explicito
+  enumerar las skills.
+
 ## 2026-08-31
 
 **Skill nueva: `adversarial-review` v1.0, y enmienda del contrato compartido (regla 9) — la

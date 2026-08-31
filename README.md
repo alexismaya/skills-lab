@@ -50,7 +50,8 @@ skills-lab/
 │   └── templates/               # Plantillas de entregables
 ├── scripts/
 │   ├── package.sh               # Empaqueta skills/* → dist/*.skill
-│   ├── install-claude.sh|.ps1   # Instala las skills en Claude Code
+│   ├── install-claude.sh|.ps1   # Instala la suite en Claude Code
+│   ├── install-kiro.sh|.ps1     # Instala la suite en Kiro
 │   ├── check-neutralidad.sh     # Verifica que no entre material identificable
 │   ├── seed-permitidos.sh       # Regenera el allowlist de la verificación
 │   ├── install-hooks.sh         # Activa los hooks (una vez por clon)
@@ -64,12 +65,25 @@ skills-lab/
 ### Instalar las skills
 
 ```bash
-./scripts/install-claude.sh                    # → ~/.claude/skills
+./scripts/install-claude.sh                        # → ~/.claude/skills
+./scripts/install-kiro.sh                          # → ~/.kiro/skills
 ./scripts/install-claude.sh /ruta/.claude/skills   # → por proyecto
 ```
 
-Copia cada carpeta de skill e inyecta el contrato compartido en sus
-`references/`. Claude Code lee las carpetas directamente.
+Cada instalador copia toda carpeta de `skills/` que tenga `SKILL.md` e inyecta
+el contrato compartido en sus `references/`. Ambos runtimes leen las carpetas
+directamente, y ambos reciben la suite completa: las skills son portables entre
+runtimes, y la columna *Integración prevista* documenta para cuál se diseñó cada
+una, no cuál puede ejecutarla.
+
+La lista **se deriva del árbol**, no está escrita en el script. Es deliberado:
+una lista fija se desincroniza en silencio por dos lados — una skill nueva no
+llega a ningún runtime, y una skill instalada que quede fuera de la lista
+conserva el contrato viejo mientras las demás avanzan, dejando dos versiones
+del contrato conviviendo en el mismo runtime.
+
+Los `.ps1` equivalentes (`install-claude.ps1`, `install-kiro.ps1`) hacen lo
+mismo desde PowerShell.
 
 ### Empaquetar
 
