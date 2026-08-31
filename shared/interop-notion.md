@@ -15,6 +15,7 @@ especialidad; este documento define lo que comparten para no pisarse.
 ├── Auditoría                   ← solo proyectos auditados (project-audit)
 ├── Corpus                      ← contexto persistente (documentation-master)
 ├── QA                          ← hub de calidad (qa-discovery / qa-generator)
+├── Revisión adversarial        ← contra-reportes (adversarial-review)
 ├── Lecciones SDD               ← o enlace a la página global del usuario
 └── Fase 1..N                   ← hub de fase → subpáginas de etapa (SDD harness)
 ```
@@ -58,6 +59,12 @@ reorganiza lo que existe.
    gate final de un proyecto no cierra sin el veredicto QA correspondiente.
    Las guardas del proyecto (anti-arrastre, patrones prohibidos) también
    aplican al código de tests: los tests son código del proyecto.
+   **El gate de análisis y la propuesta de fases/etapas no se aprueban sin
+   contra-reporte adjunto** (regla 9): son los dos puntos donde revertir
+   todavía es barato. Los gates de cierre de fase lo ofrecen. En todos los
+   casos **omitirlo se declara por escrito en el gate** — un contra-reporte
+   ausente y no declarado se lee como uno aprobatorio, que es justo el
+   efecto que la regla evita.
 
 6. **Lecciones compartidas.** Una sola página "Lecciones SDD" por usuario (o
    por proyecto, a su elección): toda skill la lee al arrancar y ofrece
@@ -95,6 +102,27 @@ reorganiza lo que existe.
    vida) vive en `documentation-master/references/corpus.md`. **Ampliarlo no requiere
    enmendar este contrato; quitar o renombrar cualquiera de los campos listados aquí, sí** —
    son los que las demás skills tienen derecho a dar por ciertos.
+
+9. **Revisión adversarial (independiente y no correctiva).** Un artefacto de plan —reporte de
+   análisis, propuesta de fases, reporte de cierre, handoff— puede someterse a un
+   **contra-reporte**: una segunda voz que intenta refutarlo antes de que se ejecute. Su dueña
+   es `adversarial-review`, que crea y edita solo sus propias páginas. Tres cláusulas que las
+   demás skills pueden dar por ciertas:
+
+   - **Asimetría de insumos.** El revisor recibe el artefacto y las fuentes primarias (código,
+     DDL, lo que el usuario declaró literalmente) — **nunca la conversación en la que el
+     artefacto se produjo**. Leer la justificación del autor antes de atacarla hereda el sesgo
+     que la revisión existe para romper.
+   - **Refuta, no corrige.** No edita el artefacto revisado ni ninguna página ajena, y no
+     propone la solución: eso es del dueño del artefacto (regla 2). Una objeción sostenida es
+     un **reporte de desviación**, como cualquier otro de la suite.
+   - **Una refutación aceptada entra a la tabla única como P-n**, con
+     `origen: adversarial-review` y su `gatea` declarado. Es la única forma en que el revisor
+     toca un artefacto compartido, y se hace con edición quirúrgica.
+
+   El contra-reporte se archiva en la página **Revisión adversarial** del proyecto y se enlaza
+   desde el gate que lo motivó. La taxonomía de refutación y las plantillas viven en
+   `adversarial-review/references/`; ampliarlas no requiere enmendar este contrato.
 
 ## Nota operativa (integraciones distintas)
 
