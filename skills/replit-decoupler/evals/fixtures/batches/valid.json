@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "batch_id": "batch-metadata-cleanup",
+  "profile": "bajo-coste",
+  "contract_version": "SC-1@v1",
+  "approved": true,
+  "planner": {"name": "planificador", "profile": "intermedio", "date": "2030-01-01"},
+  "allowed_files": ["config/.replit"],
+  "protected_files": ["src/"],
+  "open_questions": [],
+  "tasks": [
+    {
+      "id": "T1",
+      "finding_class": "A",
+      "location": "config/.replit",
+      "anchor": "archivo completo",
+      "change": "Eliminar el archivo de metadatos aprobado.",
+      "verification": {"command": "test ! -e config/.replit", "expected": "exit 0"},
+      "smoke": {"command": "python -m compileall src", "expected": "exit 0", "positive_signal": "compilación completa"},
+      "stop_condition": "Si el archivo es consumido por un comando, detener y reportar.",
+      "handoff": "Metadato eliminado; src/ permanece intacto."
+    }
+  ]
+}

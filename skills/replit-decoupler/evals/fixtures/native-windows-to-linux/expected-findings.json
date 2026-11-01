@@ -1,0 +1,6 @@
+{
+  "target_os": "linux",
+  "findings": [
+    {"detector": "native-platform-pin", "path": "package.json", "line": 4, "allowlisted": false}
+  ]
+}

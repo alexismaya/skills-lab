@@ -1,0 +1,10 @@
+{
+  "target_os": null,
+  "findings": [
+    {"detector": "replit-package", "path": "package.json", "line": 3, "allowlisted": false},
+    {"detector": "replit-token", "path": "package.json", "line": 3, "allowlisted": false},
+    {"detector": "replit-package", "path": "src/service.js", "line": 1, "allowlisted": false},
+    {"detector": "replit-token", "path": "src/service.js", "line": 1, "allowlisted": false},
+    {"detector": "replit-env", "path": "src/service.js", "line": 2, "allowlisted": false}
+  ]
+}

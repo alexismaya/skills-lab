@@ -1,0 +1,22 @@
+[
+  {"query":"Este monorepo se hizo en Replit; necesito que corra en mi laptop sin borrar lógica de negocio.","should_trigger":true},
+  {"query":"Quita .replit, replit.nix y los plugins @replit, pero primero comprueba qué función cumplen.","should_trigger":true},
+  {"query":"Migramos fuera de Replit y todavía usamos REPL_ID y Replit Object Storage; arma la transición segura.","should_trigger":true},
+  {"query":"La app compila fuera de Replit pero falla al instalar binarios nativos en Windows; revisa el acoplamiento.","should_trigger":true},
+  {"query":"Confirma que este repo ya no depende de Replit y que arranca en otro hosting.","should_trigger":true},
+  {"query":"Necesito reemplazar Replit DB sin perder datos ni cambiar el contrato de la app.","should_trigger":true},
+  {"query":"Limpia las referencias históricas y activas de Replit, conservando las notas de migración justificadas.","should_trigger":true},
+  {"query":"¿Por qué mi proyecto exportado de Replit solo funciona con sus secrets y deployments? Desacóplalo.","should_trigger":true},
+  {"query":"Haz una auditoría general de seguridad, rendimiento y mantenibilidad de este repo.","should_trigger":false},
+  {"query":"Migra mi aplicación de un proveedor cloud a otro; nunca ha usado Replit.","should_trigger":false},
+  {"query":"Crea un proyecto nuevo tomando este repositorio como plantilla, sin arrastrar marca ni código muerto.","should_trigger":false},
+  {"query":"Escribe tests unitarios para el módulo de reservas que ya analicé.","should_trigger":false},
+  {"query":"Optimiza el endpoint lento y cambia la estrategia de caché.","should_trigger":false},
+  {"query":"Explícame qué significa replicación de base de datos y para qué sirve un archivo .replrc.","should_trigger":false},
+  {"query":"Genera un README con instrucciones locales para un repo que nunca estuvo en Replit.","should_trigger":false},
+  {"query":"Haz una revisión adversarial del plan de migración que ya escribimos.","should_trigger":false},
+  {"query":"Configura un deployment nuevo en Replit para esta aplicación.","should_trigger":false},
+  {"query":"Ayúdame a depurar un error de runtime dentro del workspace de Replit sin migrarlo.","should_trigger":false},
+  {"query":"Documenta la arquitectura completa del proyecto en Notion.","should_trigger":false},
+  {"query":"Prepara commits y un PR para los cambios ya terminados.","should_trigger":false}
+]

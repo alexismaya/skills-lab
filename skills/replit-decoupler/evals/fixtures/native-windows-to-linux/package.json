@@ -1,0 +1,6 @@
+{
+  "name": "fixture-native-pin",
+  "overrides": {
+    "native-helper": "win32-x64"
+  }
+}

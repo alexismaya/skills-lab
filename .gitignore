@@ -20,3 +20,13 @@ private/
 .claude/commands/
 .agents/
 skills-lock.json
+
+
+# Salidas locales de evaluacion comparativa (with_skill / baseline / viewer).
+# Los casos fuente viven en skills/<nombre>/evals/; estos workspaces son generados.
+skills/*-workspace/
+
+
+# Caches de scripts/tests Python locales.
+__pycache__/
+*.pyc

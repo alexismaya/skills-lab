@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@replit/vite-plugin-runtime-error-modal": "1.0.0"
+  }
+}

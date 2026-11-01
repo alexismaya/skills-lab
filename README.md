@@ -5,8 +5,9 @@ engineering**: fases con gates de revisión humana, análisis antes de
 implementación, y evidencia en vez de afirmación. Notion actúa como gestor de
 tareas, contexto vinculante y documentación.
 
-El contenido de las skills está **en español**. Son archivos Markdown: no hay
-código de aplicación ni suite de pruebas.
+El contenido de las skills está **en español**. El núcleo son archivos Markdown; algunas
+skills incluyen scripts deterministas y sus fixtures/pruebas, pero no hay código de
+aplicación ni un stack impuesto a los proyectos del usuario.
 
 > **Repo público, pensado para terceros.** Las skills no traen casos de
 > proyectos reales ni conocimiento de ningún sector: son agnósticas de dominio y
@@ -21,6 +22,7 @@ código de aplicación ni suite de pruebas.
 | [`project-audit`](skills/project-audit/) | **Diagnóstico** — auditoría contra 4 pilares (seguridad, escalabilidad, rendimiento, mantenibilidad) con evidencia `file:line` y severidad justificada |
 | [`sdd-harness-notion`](skills/sdd-harness-notion/) | **Construcción** — fases con gates, etapas atomizadas en Notion, evidencia por criterio, calibración por capacidad del ejecutor |
 | [`adversarial-review`](skills/adversarial-review/) | **Refutación** — contra-reporte independiente de un artefacto de plan antes de ejecutarlo: objeciones citadas, premortem acotado y veredicto; refuta y reporta, nunca corrige ni propone |
+| [`replit-decoupler`](skills/replit-decoupler/) | **Portabilidad** — inventaría y elimina/sustituye acoplamientos de Replit con contrato de sustancia, paridad demostrada y smoke fuera de la plataforma |
 | [`qa-discovery`](skills/qa-discovery/) | **Calidad (plan)** — detecta el stack, mapea superficies de prueba y las prioriza por riesgo de negocio |
 | [`qa-generator`](skills/qa-generator/) | **Calidad (ejecución)** — materializa suites por modo: unitario, integración, e2e, infraestructura |
 | [`project-onboarding`](skills/project-onboarding/) | **Documentación** — snapshot del proyecto en Notion con diagramas Mermaid; lo que no tiene fuente se marca pendiente, nunca se inventa |
@@ -29,12 +31,13 @@ código de aplicación ni suite de pruebas.
 | [`project-doc`](skills/project-doc/) | **Documento** — proyecta el corpus de `documentation-master` a un `.docx` adaptado a la audiencia (manual de usuario, capacitación, PM, handover técnico, cliente, aval de desempeño) |
 | [`git-workflow`](skills/git-workflow/) | **Transversal** — gobierna el uso de Git por el agente en cualquier repo: propone y explica, nunca decide solo |
 
-Las once comparten **tabla única de preguntas abiertas** por proyecto, página de
+Las doce comparten **tabla única de preguntas abiertas** por proyecto, página de
 Lecciones, **handoffs como interfaz** entre skills, y gates cruzados — definido
 todo en [`shared/interop-notion.md`](shared/interop-notion.md).
 
-Las skills son **portables entre runtimes** (Claude/Claude Code y Kiro); las
-equivalencias de herramienta por runtime están en el contrato compartido.
+Las skills son **portables entre runtimes** (Claude/Claude Code, Kiro y la CLI
+de Antigravity); las equivalencias de herramienta por runtime están en el
+contrato compartido.
 
 ## Estructura
 
@@ -47,11 +50,14 @@ skills-lab/
 ├── skills/<nombre>/
 │   ├── SKILL.md                 # Frontmatter (name + description-trigger) + cuerpo
 │   ├── references/              # Material que la skill lee bajo demanda
-│   └── templates/               # Plantillas de entregables
+│   ├── templates/               # Plantillas de entregables
+│   ├── scripts/                 # Guardas deterministas opcionales
+│   └── evals/                   # Fixtures y casos de evaluación opcionales
 ├── scripts/
 │   ├── package.sh               # Empaqueta skills/* → dist/*.skill
 │   ├── install-claude.sh|.ps1   # Instala la suite en Claude Code
 │   ├── install-kiro.sh|.ps1     # Instala la suite en Kiro
+│   ├── install-antigravity.sh|.ps1  # Instala la suite en la CLI de Antigravity
 │   ├── check-neutralidad.sh     # Verifica que no entre material identificable
 │   ├── seed-permitidos.sh       # Regenera el allowlist de la verificación
 │   ├── install-hooks.sh         # Activa los hooks (una vez por clon)
@@ -67,14 +73,23 @@ skills-lab/
 ```bash
 ./scripts/install-claude.sh                        # → ~/.claude/skills
 ./scripts/install-kiro.sh                          # → ~/.kiro/skills
+./scripts/install-antigravity.sh                   # → ~/.gemini/config/skills
 ./scripts/install-claude.sh /ruta/.claude/skills   # → por proyecto
 ```
 
 Cada instalador copia toda carpeta de `skills/` que tenga `SKILL.md` e inyecta
-el contrato compartido en sus `references/`. Ambos runtimes leen las carpetas
-directamente, y ambos reciben la suite completa: las skills son portables entre
-runtimes, y la columna *Integración prevista* documenta para cuál se diseñó cada
-una, no cuál puede ejecutarla.
+el contrato compartido en sus `references/`. Los tres runtimes leen las carpetas
+directamente, y los tres reciben la suite completa: las skills son portables
+entre runtimes, y la columna *Integración prevista* documenta para cuál se
+diseñó cada una, no cuál puede ejecutarla.
+
+En Antigravity el destino global es `~/.gemini/config/skills/`, que aplica a
+todos los proyectos de la máquina; el equivalente por proyecto es
+`<raíz>/.agents/skills/`, que tiene precedencia sobre el global y permite que un
+repo sobrescriba una skill concreta. **No** se instala en
+`~/.gemini/antigravity-cli/builtin/skills/`: ese árbol lo administra la CLI,
+está sellado por checksum y se reescribe en cada actualización — lo que se
+ponga ahí desaparece sin aviso. El instalador rechaza ese destino.
 
 La lista **se deriva del árbol**, no está escrita en el script. Es deliberado:
 una lista fija se desincroniza en silencio por dos lados — una skill nueva no
@@ -82,8 +97,8 @@ llega a ningún runtime, y una skill instalada que quede fuera de la lista
 conserva el contrato viejo mientras las demás avanzan, dejando dos versiones
 del contrato conviviendo en el mismo runtime.
 
-Los `.ps1` equivalentes (`install-claude.ps1`, `install-kiro.ps1`) hacen lo
-mismo desde PowerShell.
+Los `.ps1` equivalentes (`install-claude.ps1`, `install-kiro.ps1`,
+`install-antigravity.ps1`) hacen lo mismo desde PowerShell.
 
 ### Empaquetar
 

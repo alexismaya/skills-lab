@@ -1,0 +1,7 @@
+{
+  "target_os": null,
+  "allowlist": "allowlist.json",
+  "findings": [
+    {"detector": "replit-token", "path": "docs/migration.md", "line": 1, "allowlisted": true}
+  ]
+}

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A suite of agent skills (Markdown, written in Spanish) for building software projects under the "SDD harness engineering" methodology, with Notion as the task/context/documentation manager. There is no application code, build system, or test suite — the only executables are the shell scripts in `scripts/` (packaging, installation, and the neutrality checker with its hooks).
+A suite of agent skills (Markdown, written in Spanish) for building software projects under the "SDD harness engineering" methodology, with Notion as the task/context/documentation manager. There is no application code or imposed project stack; some skills bundle standard-library scripts and deterministic fixtures/tests, alongside the repository-level packaging, installation, and neutrality scripts.
 
 > **This repo is public and written for third parties** — people who do not know
 > the author's projects and will run these skills against their own systems. Two
@@ -18,19 +18,21 @@ A suite of agent skills (Markdown, written in Spanish) for building software pro
 ./scripts/package.sh                     # packages each skills/<name>/ (that has a SKILL.md) into dist/<name>.skill
 ./scripts/install-claude.sh [dest]       # installs the whole suite into ~/.claude/skills (or the given dir); .ps1 variant for PowerShell
 ./scripts/install-kiro.sh [dest]         # same, into ~/.kiro/skills; .ps1 variant for PowerShell
+./scripts/install-antigravity.sh [dest]  # same, into ~/.gemini/config/skills (Antigravity CLI); .ps1 variant
 ./scripts/install-hooks.sh               # enables the neutrality hooks (once per clone)
 ./scripts/check-neutralidad.sh --all     # full neutrality audit of the tree
 ./scripts/seed-permitidos.sh             # regenerates the allowlist from the tree (only if the tree is verified clean)
+python -m unittest discover -s skills/replit-decoupler/tests -v  # deterministic skill-local tests
 ```
 
-The scripts are bash (run via Git Bash on Windows). For each skill they copy `shared/interop-notion.md` into the skill's `references/`; `package.sh` also zips the folder into `dist/`. `dist/` is generated output and not versioned. **The installers derive their skill list from `skills/` — every folder with a `SKILL.md` is installed into both runtimes.** Do not reintroduce a hardcoded list: it desynchronises silently in two directions, leaving a new skill installed nowhere and an already-installed one carrying a stale contract while the rest move on.
+The scripts are bash (run via Git Bash on Windows). For each skill they copy `shared/interop-notion.md` into the skill's `references/`; `package.sh` also zips the folder into `dist/`. `dist/` is generated output and not versioned. **The installers derive their skill list from `skills/` — every folder with a `SKILL.md` is installed into all three runtimes.** Do not reintroduce a hardcoded list: it desynchronises silently in two directions, leaving a new skill installed nowhere and an already-installed one carrying a stale contract while the rest move on. Each runtime has its own global skills root: `~/.claude/skills`, `~/.kiro/skills`, and — for the Antigravity CLI (`agy`) — `~/.gemini/config/skills` (per-project equivalent: `<root>/.agents/skills`, which takes precedence). Never install into `~/.gemini/antigravity-cli/builtin/skills`: that tree is checksum-sealed and rewritten on every CLI update; `install-antigravity.sh|.ps1` refuses that destination.
 
 ## Architecture
 
 - `shared/interop-notion.md` — the interoperability contract between all skills: canonical Notion project structure, single P-table (open questions) per project, page ownership per skill, handoffs as the interface between skills, cross-skill gates, shared "Lecciones SDD" page. **This is the single source of truth.** Copies inside packaged skills are build artifacts — never edit the contract anywhere but `shared/`. A change to it affects the whole suite and should be reviewed as such.
 - `skills/<name>/` — one skill per folder: `SKILL.md` (frontmatter with `name` + trigger `description`, then the skill body) plus optional `references/` and `templates/`.
 
-Most skills operate over a shared Notion project: `project-audit` diagnoses an existing one, `derivar-proyecto` and `sdd-harness-notion` build it, `project-onboarding` documents its surface, `documentation-master` extracts the logic underneath it into a persistent corpus, `project-deck` presents it, and the QA skills test it. Two are cross-cutting: `adversarial-review` refutes a *plan* artifact before it is executed — the only skill whose job is to attack another's output, and it may only report, never edit — and `git-workflow` governs how agents use Git in any repo (pipeline project or not). Both coordinate through the same Notion contract:
+Most skills operate over a shared Notion project: `project-audit` diagnoses an existing one, `derivar-proyecto` and `sdd-harness-notion` build it, `project-onboarding` documents its surface, `documentation-master` extracts the logic underneath it into a persistent corpus, `project-deck` presents it, and the QA skills test it. Three are cross-cutting: `adversarial-review` refutes a *plan* artifact before it is executed; `replit-decoupler` migrates an existing project away from Replit while preserving its substance; and `git-workflow` governs how agents use Git in any repo. They coordinate through the same Notion contract:
 
 | Skill | Integración prevista | Role |
 |---|---|---|
@@ -38,6 +40,7 @@ Most skills operate over a shared Notion project: `project-audit` diagnoses an e
 | `project-audit` | Any agent | Diagnosis: audit against 4 pillars (security, scalability, performance, maintainability) with `file:line` evidence and justified severity; diagnoses only — never edits the audited code; hands off to `derivar-proyecto` (rehacer) or `sdd-harness-notion` (remediar) |
 | `sdd-harness-notion` | Claude | Construction: phases with human-review gates, stages atomized in Notion, evidence per acceptance criterion |
 | `adversarial-review` | Any agent | Cross-cutting refutation: a contra-agent tries to break a *plan* artifact before it is executed — analysis report (A1) and phase/stage proposal (A2), both mandatory; phase-close report (A3) and handoffs (A4), offered. Receives the artifact plus primary sources but **never the conversation that produced it**. Refutes and reports only: never edits the reviewed artifact, never proposes the fix. An accepted objection becomes a `P-n` with its `gatea`; owns the "Revisión adversarial" page (`interop-notion.md` §9) |
+| `replit-decoupler` | Any agent | Portability/remediation: inventories Replit coupling across paths, code, services, manifests, lockfiles and platform assumptions; approves a substance contract before classifying A–G, blocks functional deletion without parity/migration/rollback, and closes only with clean install plus positive smoke. Owns the `Desacoplamiento` hub and `closure_state` contract (`interop-notion.md` §10) |
 | `project-onboarding` | Claude | Documentation: one-shot Notion snapshot of a project (vision, architecture, flows, data model, integrations, setup) with Mermaid diagrams; feeds `project-deck` |
 | `documentation-master` | Any agent | Extraction: stages an existing project's *real* logic into a versioned Notion corpus — atomic claims, each with declared provenance (`codigo` / `entrevista` / `auditoria` / `historial`) and `file:line` evidence or an explicit `NO DETERMINADO`; owns the corpus contract (`interop-notion.md` §8 + `references/corpus.md`) and reports coverage per projection. The `operacion` block (bring-up, environments, accesses, release criteria) is the one it fills by **directed interview**, never inferred from code; `riesgo` / `trayectoria` / `pruebas` come from other skills. Produces **no output files**: renderers project from the corpus |
 | `project-deck` | Claude | Presentation: generates a project PPTX as a point-in-time snapshot; audience-driven (technical / stakeholder / user manual); consumes `project-onboarding`'s `diagrams-export` |

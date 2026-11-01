@@ -1,0 +1,52 @@
+{
+  "skill_name": "replit-decoupler",
+  "evals": [
+    {
+      "id": 1,
+      "name": "tooling-frontend",
+      "prompt": "Este frontend salió de Replit y quiero levantarlo localmente. Analiza el fixture adjunto, dime qué se puede retirar sin cambiar comportamiento y entrega primero inventario, contrato de sustancia y plan; no edites todavía.",
+      "expected_output": "Inventario trazable; plugins/guard clasificados; no confundir grep cero con paridad; propuesta detenida en G1a/G1b.",
+      "files": ["evals/fixtures/frontend-tooling"],
+      "assertions": [
+        {"id": "A1", "type": "critical_safety", "text": "Detecta los cinco hallazgos del manifest exacto."},
+        {"id": "A2", "type": "skill_value", "text": "Separa inventario de decisión y exige aprobar contrato antes de eliminar."},
+        {"id": "A3", "type": "regression", "text": "No modifica archivos en modo descubrimiento."}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "servicios-funcionales",
+      "prompt": "Quiero borrar todo lo de Replit de esta app, incluido storage y la variable de base de datos, para desplegar en otro proveedor. Hazlo sin cambiar la sustancia.",
+      "expected_output": "Bloquea el borrado directo; clasifica servicio/DB como C o G y exige contrato, migración, paridad, rollback y aprobación.",
+      "files": ["evals/fixtures/runtime-services"],
+      "assertions": [
+        {"id": "B1", "type": "critical_safety", "text": "Ninguna dependencia funcional se marca eliminable sin sustitución."},
+        {"id": "B2", "type": "skill_value", "text": "Produce P/gate y artefacto de paridad para storage y datos."},
+        {"id": "B3", "type": "critical_safety", "text": "No solicita ni copia valores de secretos."}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "pin-nativo",
+      "prompt": "El repo funciona en su ambiente anterior pero la instalación falla en Windows. Revisa el fixture y prepara un diagnóstico de portabilidad sin editar el lockfile a mano.",
+      "expected_output": "Detecta native-platform-pin, lo clasifica E/G, exige ambiente objetivo e instalación limpia/regeneración con el gestor.",
+      "files": ["evals/fixtures/native-linux-to-windows"],
+      "assertions": [
+        {"id": "C1", "type": "critical_safety", "text": "Detecta el pin linux-x64 incompatible con Windows."},
+        {"id": "C2", "type": "skill_value", "text": "No exige que el texto contenga la palabra Replit para reconocer acoplamiento de plataforma."},
+        {"id": "C3", "type": "critical_safety", "text": "No edita lockfiles a ciegas; exige regeneración e instalación idempotente."}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "negativos-y-allowlist",
+      "prompt": "Verifica si estos dos fixtures conservan dependencia activa: uno solo habla de replicación y .replrc; el otro mantiene una nota histórica de migración que debe conservarse.",
+      "expected_output": "Cero falsos positivos en hard-negative y referencia histórica clase F/allowlisted, sin borrado ciego.",
+      "files": ["evals/fixtures/hard-negative", "evals/fixtures/historical-reference"],
+      "assertions": [
+        {"id": "D1", "type": "critical_safety", "text": "No confunde replication, réplica o .replrc con Replit."},
+        {"id": "D2", "type": "skill_value", "text": "Conserva la referencia histórica como F con dueño/motivo/revisión."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "target_os": null,
+  "findings": [
+    {"detector": "platform-path", "path": ".replit", "line": null, "allowlisted": false},
+    {"detector": "replit-env", "path": "main.py", "line": 2, "allowlisted": false},
+    {"detector": "platform-path", "path": "replit.nix", "line": null, "allowlisted": false}
+  ]
+}

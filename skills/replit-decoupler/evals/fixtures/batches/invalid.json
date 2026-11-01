@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "batch_id": "batch-invalid",
+  "profile": "bajo-coste",
+  "contract_version": "",
+  "approved": false,
+  "planner": {"name": "", "profile": "bajo-coste", "date": ""},
+  "allowed_files": [],
+  "protected_files": [],
+  "open_questions": ["P-1"],
+  "tasks": [
+    {
+      "id": "T1",
+      "finding_class": "C",
+      "location": "src/storage.py",
+      "anchor": "",
+      "change": "Decidir un reemplazo.",
+      "verification": {},
+      "smoke": {},
+      "stop_condition": "",
+      "handoff": ""
+    }
+  ]
+}

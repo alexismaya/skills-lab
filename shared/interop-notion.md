@@ -16,6 +16,7 @@ especialidad; este documento define lo que comparten para no pisarse.
 ├── Corpus                      ← contexto persistente (documentation-master)
 ├── QA                          ← hub de calidad (qa-discovery / qa-generator)
 ├── Revisión adversarial        ← contra-reportes (adversarial-review)
+├── Desacoplamiento             ← huella, contrato, plan y cierre (replit-decoupler)
 ├── Lecciones SDD               ← o enlace a la página global del usuario
 └── Fase 1..N                   ← hub de fase → subpáginas de etapa (SDD harness)
 ```
@@ -123,6 +124,28 @@ reorganiza lo que existe.
    El contra-reporte se archiva en la página **Revisión adversarial** del proyecto y se enlaza
    desde el gate que lo motivó. La taxonomía de refutación y las plantillas viven en
    `adversarial-review/references/`; ampliarlas no requiere enmendar este contrato.
+
+10. **Desacoplamiento de Replit (interfaz mínima).** Cuando un proyecto se migra fuera de
+   Replit puede tener un hub **Desacoplamiento**, cuya dueña es `replit-decoupler`. La skill
+   escribe su contrato de sustancia, matriz A–G, decisiones de paridad, plan, handoff y cierre;
+   SDD consume esos artefactos sin reinterpretar las clases.
+
+   - **Contrato antes de acción.** Ninguna referencia se elimina o sustituye antes de G1a
+     (contrato de sustancia) y G1b (clasificación). Una clase G abre P-n y gatea a sus
+     consumidores.
+   - **Handoff garantizado:** versión del contrato · IDs/clases · Ps/gates · lotes/grafo ·
+     archivos permitidos/protegidos · baseline/fallos preexistentes · verificaciones y
+     contrafactuales · allowlist · riesgos · perfil requerido.
+   - **`closure_state` es cerrado:** `complete` · `partial-risk-accepted` · `blocked`.
+     `partial-risk-accepted` no equivale a completo: SDD solo libera trabajo nombrado como
+     independiente; sin esa lista lo trata como `blocked`. Solo el usuario lo promueve a
+     `complete` con nueva evidencia.
+   - **Hallazgo tardío:** si la ejecución contradice el contrato aprobado, el lote se detiene,
+     se abre P-n, el contrato queda `superseded-pending-review` y se repiten sus gates. No se
+     incorpora silenciosamente al handoff.
+
+   El catálogo completo, las clases A–G y las plantillas viven en
+   `replit-decoupler/references/` y `templates/`; ampliarlos no enmienda este contrato.
 
 ## Nota operativa (integraciones distintas)
 

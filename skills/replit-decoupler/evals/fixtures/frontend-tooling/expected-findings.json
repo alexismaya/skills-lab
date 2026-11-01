@@ -1,0 +1,10 @@
+{
+  "target_os": null,
+  "findings": [
+    {"detector": "replit-package", "path": "package.json", "line": 3, "allowlisted": false},
+    {"detector": "replit-token", "path": "package.json", "line": 3, "allowlisted": false},
+    {"detector": "replit-package", "path": "vite.config.ts", "line": 1, "allowlisted": false},
+    {"detector": "replit-token", "path": "vite.config.ts", "line": 1, "allowlisted": false},
+    {"detector": "replit-env", "path": "vite.config.ts", "line": 2, "allowlisted": false}
+  ]
+}

@@ -1,5 +1,52 @@
 # Changelog
 
+## 2026-09-07
+
+**Skill nueva: `replit-decoupler` v1.0, y regla 10 del contrato compartido.** Origen: convertir
+un desacoplamiento de Replit observado en un procedimiento reutilizable sin llevar al repo publico
+ningun dato del proyecto que lo motivo.
+
+- **Contrato de sustancia antes de borrar.** G1a fija flujos, contratos, datos, baseline y zonas
+  protegidas; G1b clasifica cada candidato A–G. Una referencia funcional o no determinada nunca
+  cruza a ejecucion por parecer "configuracion".
+- **Inventario multicanal, no grep como certificado.** `scan_replit.py` recorre rutas, texto,
+  variables, manifests/lockfiles y pins OS/CPU/libc; declara binarios e ilegibles y produce
+  candidatos trazables. `native-platform-pin` cubre el acoplamiento que solo aparece al instalar
+  en otro sistema operativo.
+- **Paridad discriminante y cierre real.** Cada reemplazo funcional exige baseline, mismo caso
+  despues y contrafactual inerte; el cierre agrega instalacion limpia idempotente, regresion y
+  smoke positivo. `closure_state` (`complete` / `partial-risk-accepted` / `blocked`) evita que SDD
+  lea un cierre parcial como completo.
+- **Ejecutores baratos sin juicio.** `validate_batch.py` acepta solo lotes A aprobados, con lista
+  cerrada, salida esperada, smoke positivo propio y certificacion de un planificador capaz; emite
+  un hash que el ejecutor compara antes de actuar.
+- **Evals y neutralidad.** Ocho fixtures sinteticos cubren tooling, servicios funcionales,
+  Python/Nix, referencias historicas, pins en ambos sentidos y hard-negatives; tests de biblioteca
+  estandar fijan oraculos exactos. Los ejemplos son tecnicos y genericos, sin material de un caso
+  real.
+- **Interop regla 10:** hub `Desacoplamiento`, ownership, handoff minimo, `closure_state` y
+  protocolo de hallazgo tardio. README y CLAUDE.md registran la skill; los instaladores no cambian
+  porque derivan la lista desde `skills/`.
+
+**Tercer instalador: `install-antigravity.sh|.ps1`, destino global de la CLI de Antigravity.**
+Origen: querer la suite disponible en `agy` sin copiarla a mano. La CLI documenta su propio
+contrato de personalizacion, asi que el instalador no inventa rutas: las lee de ahi.
+
+- **El destino global es `~/.gemini/config/skills/`**, no la carpeta de la CLI. Antigravity
+  descubre skills en tres sitios con precedencia: el `.agents/skills/` del workspace, luego el
+  global de la maquina, luego las builtin. Instalar en el global deja la suite en todos los
+  proyectos y sigue permitiendo que un repo sobrescriba una skill concreta con su copia local
+  — que es el reparto que ya tenian Claude y Kiro.
+- **El instalador rechaza `~/.gemini/antigravity-cli/builtin/skills/`.** Es el destino que
+  parece correcto por nombre y es el unico que se pierde: ese arbol lo administra la CLI, esta
+  sellado por checksum y se reescribe en cada actualizacion. Una instalacion que desaparece en
+  la siguiente actualizacion falla en silencio, igual que fallaba la lista fija; el guardarrail
+  esta en los dos scripts y el motivo, en su cabecera.
+- **Misma forma que los otros dos**: lista derivada del arbol, contrato compartido inyectado en
+  `references/`, `.ps1` equivalente. No habia razon para que el tercero se pareciera menos.
+- **README y CLAUDE.md** anotan la ruta global de cada runtime y la carpeta prohibida, para que
+  no haya que redescubrirla leyendo la skill de personalizacion de la CLI.
+
 ## 2026-08-31 (2)
 
 **Instaladores: la lista fija se sustituye por el arbol, y aparece `install-kiro.sh`.** Origen:

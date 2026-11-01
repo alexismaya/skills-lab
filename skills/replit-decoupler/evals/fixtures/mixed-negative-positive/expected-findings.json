@@ -1,0 +1,7 @@
+{
+  "target_os": null,
+  "findings": [
+    {"detector": "replit-env", "path": "scripts/start.sh", "line": 1, "allowlisted": false}
+  ],
+  "rejected_candidates": ["Replicación", "réplica", ".replrc"]
+}
